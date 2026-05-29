@@ -1,0 +1,11 @@
+# Bỏ qua các file cấu hình riêng của IDE Eclipse
+.metadata/
+.settings/
+.classpath
+.project
+bin/
+*.class
+
+# Bỏ qua các file hệ điều hành sinh ra
+.DS_Store
+Thumbs.db
