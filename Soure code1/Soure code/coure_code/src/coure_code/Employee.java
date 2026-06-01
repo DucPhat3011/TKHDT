@@ -1,20 +1,16 @@
 package coure_code;
 
-import java.util.Date;
+public abstract class Employee extends User {
+    private double salary;
 
-public class Employee extends User {
-    protected String employeeCode;
-    protected double salary;
-    protected Date joinDate;
-    protected String status;
-    protected String department;
-    
-    public String getWorkSchedule() {
-        return "Lịch làm việc mặc định: 8h - 17h";
+    public Employee(int id, String username, String password, String fullName, String email, String phone, String address, double baseSalary) {
+        super(id, username, password, fullName, email, phone, address);
+        this.salary = baseSalary;
     }
 
-	public void updateRoomStatus(int roomId, RoomStatus status) {
-		// TODO Auto-generated method stub
-		
-	}
+    public double getBaseSalary() {
+        return salary;
+    }
+
+    public abstract double calculateSalary();
 }

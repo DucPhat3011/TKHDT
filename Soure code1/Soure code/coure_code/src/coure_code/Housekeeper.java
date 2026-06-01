@@ -1,15 +1,14 @@
 package coure_code;
 
 public class Housekeeper extends Employee {
-	private String shift;
+    public Housekeeper(int id, String username, String password, String fullName, String email, String phone, String address, double baseSalary) {
+        super(id, username, password, fullName, email, phone, address, baseSalary);
+    }
 
-	public Housekeeper(String shift) {
-		super();
-		this.shift = shift;
-	}
+    @Override
+    public double calculateSalary() {
+        return getBaseSalary() * 1.0; // Hệ số lương của Buồng phòng
+    }
 
-	@Override
-	public void updateRoomStatus(int roomId, RoomStatus status) {
-		System.out.println("Nhân viên ca " + shift + " đã cập nhật phòng " + roomId + " sang trạng thái: " + status);
-	}
+    public void updateRoomStatus() {}
 }

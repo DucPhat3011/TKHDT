@@ -1,29 +1,18 @@
 package coure_code;
+import java.util.Date;
 
 public class ServiceUsage {
-    private int usageId;
-    private int quantity;
     private Service service;
-    private double totalCost;
-    private StayRecord stayRecord;
+    private int quantity;
+    private Date usageDate;
 
-    public ServiceUsage(int usageId, int quantity, Service service, StayRecord stayRecord) {
-        this.usageId = usageId;
-        this.quantity = quantity;
+    public ServiceUsage(Service service, int quantity, Date usageDate) {
         this.service = service;
-        this.stayRecord = stayRecord;
-        this.totalCost = calculateServiceCharge();
+        this.quantity = quantity;
+        this.usageDate = usageDate;
     }
 
-    /**
-     * Phương thức tính phí dịch vụ theo sơ đồ
-     * Phí = Số lượng * Đơn giá dịch vụ
-     */
-    public double calculateServiceCharge() {
-        if (service != null) {
-            this.totalCost = this.quantity * service.getUnitPrice();
-            return this.totalCost;
-        }
-        return 0;
+    public double getTotalCost() {
+        return service.getPrice() * quantity;
     }
 }
