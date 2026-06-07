@@ -1,31 +1,93 @@
-package coure_code;
-
 public abstract class User {
-    private int id;
-    private String username;
-    private String password;
-    private String fullName;
-    private String email;
-    private String phone;
-    private String address;
+	private int id;
+	private String userName;
+	private String password;
+	private String email;
+	private String fullName;
+	private String phone;
+	private String address;
 
-    public User(int id, String username, String password, String fullName, String email, String phone, String address) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.fullName = fullName;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-    }
+	public User(int id, String userName, String password, String email, String fullName, String phone, String address) {
+		this.id = id;
+		this.userName = userName;
+		this.password = password;
+		this.email = email;
+		this.fullName = fullName;
+		this.phone = phone;
+		this.address = address;
+	}
 
-    public boolean login(String username, String password) {
-        return this.username.equals(username) && this.password.equals(password);
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void logout() {
-        System.out.println("User " + username + " logged out.");
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    // Getters and Setters omitted for brevity
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public boolean login() {
+		return false;
+	}
+
+	public void logout() {
+	}
+
+	public boolean changePassword(String oldPass, String newPass) {
+		return false;
+	}
+
+	public void updateProfile(User data) {
+	}
+
+	public boolean isActive() {
+		return false;
+	}
 }

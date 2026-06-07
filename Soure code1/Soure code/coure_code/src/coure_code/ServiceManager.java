@@ -1,51 +1,44 @@
-package coure_code;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceManager {
-    private List<Services> servicesList;
+	private List<Services> services;
+	private IPriceStrategy priceStrategy;
 
-    public ServiceManager() {
-        this.servicesList = new ArrayList<>();
-    }
+	public ServiceManager(List<Services> services, IPriceStrategy priceStrategy) {
+		this.services = services;
+		this.priceStrategy = priceStrategy;
+	}
 
-    // Thêm một dịch vụ mới vào danh mục của khách sạn
-    public void addService(Services service) {
-        if (service != null) {
-            servicesList.add(service);
-            System.out.println("Đã thêm dịch vụ: " + service.getServiceName());
-        }
-    }
+	public List<Services> getServices() {
+		return services;
+	}
 
-    // Xóa một dịch vụ khỏi danh mục
-    public void removeService(Services service) {
-        if (servicesList.remove(service)) {
-            System.out.println("Đã xóa dịch vụ: " + service.getServiceName());
-        }
-    }
+	public void setServices(List<Services> services) {
+		this.services = services;
+	}
 
-    // Tìm kiếm dịch vụ theo ID
-    public Services findServiceById(int serviceId) {
-        for (Services s : servicesList) {
-            if (s.getServiceId() == serviceId) {
-                return s;
-            }
-        }
-        return null; // Trả về null nếu không tìm thấy
-    }
+	public IPriceStrategy getPriceStrategy() {
+		return priceStrategy;
+	}
 
-    // Lấy toàn bộ danh sách dịch vụ hiện có
-    public List<Services> getAllServices() {
-        return servicesList;
-    }
-    
-    // Cập nhật giá cho một dịch vụ
-    public void updateServicePrice(int serviceId, double newPrice) {
-        Services s = findServiceById(serviceId);
-        if (s != null) {
-            s.setPrice(newPrice);
-            System.out.println("Đã cập nhật giá cho dịch vụ: " + s.getServiceName());
-        }
-    }
+	public void addService(Services service) {
+	}
+
+	public void updateService(int serviceId, Services service) {
+	}
+
+	public void deleteService(int serviceId) {
+	}
+
+	public List<Services> getAllServices() {
+		return null;
+	}
+
+	public void setPriceStrategy(IPriceStrategy strategy) {
+	}
+
+	public double calculateServicePrice(Services service) {
+		return 0.0;
+	}
+
 }

@@ -1,44 +1,79 @@
-package coure_code;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class StayRecord {
-    private int stayId;
-    private Customer customer;
-    private Room room; // Lớp Room bạn đã code
-    private Date checkInDate;
-    private Date checkOutDate;
-    
-    private List<ServiceUsage> usedServices;
-    private IPriceStrategy priceStrategy; // Dependency Injection cho Strategy Pattern
+	private int recordId;
+	private Date actualCheckIn;
+	private Date actualCheckOut;
+	private BookingDetail bookingDetail;
+	private String checkInNote;
 
-    public StayRecord(int stayId, Customer customer, Room room, Date checkInDate) {
-        this.stayId = stayId;
-        this.customer = customer;
-        this.room = room;
-        this.checkInDate = checkInDate;
-        this.usedServices = new ArrayList<>();
-        this.priceStrategy = new RegularPrice(); // Mặc định là ngày thường
-    }
+	public StayRecord(int recordId, Date actualCheckIn, Date actualCheckOut, BookingDetail bookingDetail,
+			String checkInNote) {
+		this.recordId = recordId;
+		this.actualCheckIn = actualCheckIn;
+		this.actualCheckOut = actualCheckOut;
+		this.bookingDetail = bookingDetail;
+		this.checkInNote = checkInNote;
+	}
 
-    public void setPriceStrategy(IPriceStrategy strategy) {
-        this.priceStrategy = strategy;
-    }
+	public int getRecordId() {
+		return recordId;
+	}
 
-    public void addServiceUsage(Service service, int quantity, Date date) {
-        usedServices.add(new ServiceUsage(service, quantity, date));
-    }
+	public void setRecordId(int recordId) {
+		this.recordId = recordId;
+	}
 
-    public double calculateTotal() {
-        double roomBasePrice = room.tinhtien(); // Lấy hàm tinhtien() từ VipRoom/StandardRoom của bạn
-        double finalRoomPrice = priceStrategy.calculatePrice(roomBasePrice);
+	public Date getActualCheckIn() {
+		return actualCheckIn;
+	}
 
-        double servicesCost = 0;
-        for (ServiceUsage usage : usedServices) {
-            servicesCost += usage.getTotalCost();
-        }
+	public void setActualCheckIn(Date actualCheckIn) {
+		this.actualCheckIn = actualCheckIn;
+	}
 
-        return finalRoomPrice + servicesCost;
-    }
+	public Date getActualCheckOut() {
+		return actualCheckOut;
+	}
+
+	public void setActualCheckOut(Date actualCheckOut) {
+		this.actualCheckOut = actualCheckOut;
+	}
+
+	public BookingDetail getBookingDetail() {
+		return bookingDetail;
+	}
+
+	public void setBookingDetail(BookingDetail bookingDetail) {
+		this.bookingDetail = bookingDetail;
+	}
+
+	public String getCheckInNote() {
+		return checkInNote;
+	}
+
+	public void setCheckInNote(String checkInNote) {
+		this.checkInNote = checkInNote;
+	}
+
+	public void addService(Services service, int quantity) {
+	}
+
+	public void removeService(int serviceId) {
+	}
+
+	public double calculateTotalServiceCost() {
+		return 0.0;
+	}
+
+	public void updateActualCheckOut(Date time) {
+	}
+
+	public void applyExtraCharges(String description, double amount) {
+	}
+
+	public Invoice generateInvoice() {
+		return null;
+	}
+
 }

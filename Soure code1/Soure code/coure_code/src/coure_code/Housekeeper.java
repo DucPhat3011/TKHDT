@@ -1,14 +1,25 @@
-package coure_code;
+import java.util.Date;
 
 public class Housekeeper extends Employee {
-    public Housekeeper(int id, String username, String password, String fullName, String email, String phone, String address, double baseSalary) {
-        super(id, username, password, fullName, email, phone, address, baseSalary);
-    }
+	private String shift;
 
-    @Override
-    public double calculateSalary() {
-        return getBaseSalary() * 1.0; // Hệ số lương của Buồng phòng
-    }
+	public Housekeeper(int id, String userName, String password, String email, String fullName, String phone,
+			String address, String employeeCode, double salary, Date joinDate, String status, String department,
+			String shift) {
+		super(id, userName, password, email, fullName, phone, address, employeeCode, salary, joinDate, status,
+				department);
+		this.shift = shift;
+	}
 
-    public void updateRoomStatus() {}
+	public String getShift() {
+		return shift;
+	}
+
+	public void setShift(String shift) {
+		this.shift = shift;
+	}
+
+	public void updateRoomStatus(int roomId, RoomStatus status) {
+	}
+
 }

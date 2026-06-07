@@ -1,5 +1,5 @@
 
-public class HolidayPrice implements IPriceStrategy {
+public class VIPPrice implements IPriceStrategy {
 
 	@Override
 	public double calculatePrice(double basePrice) {
