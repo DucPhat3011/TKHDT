@@ -1,86 +1,84 @@
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class BookingDetail {
-    private int detailId;
-    private Room room;
-    private Date checkInDate;
-    private Date checkOutDate;
-    private double priceAtBooking;
-    private double subTotal;
-    private int numberOfGuests;
+	private int detailId;
+	private Room room;
+	private Date checkInDate;
+	private Date checkOutDate;
+	private double priceAtBooking;
+	private double subTotal;
+	private int numberOfGuests;
 
-    public BookingDetail(int detailId, Room room, Date checkInDate, Date checkOutDate, double priceAtBooking,
-			double subTotal, int numberOfGuests) {
-		this.detailId = detailId;
-		this.room = room;
-		this.checkInDate = checkInDate;
-		this.checkOutDate = checkOutDate;
-		this.priceAtBooking = priceAtBooking;
-		this.subTotal = subTotal;
-		this.numberOfGuests = numberOfGuests;
+
+
+    //Tính tiền chi tiết đặt phòng
+	public double calculateSubTotal() {
+		long diff = checkOutDate.getTime() - checkInDate.getTime();
+		long days = diff / (1000 * 60 * 60 * 24);
+
+		if (days <= 0)
+			days = 1;
+
+		this.subTotal = days * priceAtBooking;
+		return this.subTotal;
+	}
+//Cập nhật ngày nhận/trả
+	public void updateStayDates(Date checkIn, Date checkOut) {
+		this.checkInDate = checkIn;
+		this.checkOutDate = checkOut;
+		calculateSubTotal();
 	}
 
-	public int getDetailId() {
-        return detailId;
-    }
 
-    public void setDetailId(int detailId) {
-        this.detailId = detailId;
+    public int getDetailId() {
+        return detailId;
     }
 
     public Room getRoom() {
         return room;
     }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
     public Date getCheckInDate() {
         return checkInDate;
     }
-
-    public void setCheckInDate(Date checkInDate) {
-        this.checkInDate = checkInDate;
-    }
-
     public Date getCheckOutDate() {
         return checkOutDate;
     }
-
-    public void setCheckOutDate(Date checkOutDate) {
-        this.checkOutDate = checkOutDate;
-    }
-
     public double getPriceAtBooking() {
         return priceAtBooking;
     }
-
-    public void setPriceAtBooking(double priceAtBooking) {
-        this.priceAtBooking = priceAtBooking;
-    }
-
     public double getSubTotal() {
         return subTotal;
-    }
 
-    public void setSubTotal(double subTotal) {
-        this.subTotal = subTotal;
     }
-
     public int getNumberOfGuests() {
         return numberOfGuests;
     }
+    public void setDetailId(int detailId) {
+        this.detailId = detailId;
 
+    }
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+    public void setCheckInDate(Date checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+    public void setCheckOutDate(Date checkOutDate) {
+        this.checkOutDate = checkOutDate;
+
+    }
+    public void setPriceAtBooking(double priceAtBooking) {
+        this.priceAtBooking = priceAtBooking;
+    }
+    public void setSubTotal(double subTotal) {
+        this.subTotal = subTotal;
+    }
     public void setNumberOfGuests(int numberOfGuests) {
         this.numberOfGuests = numberOfGuests;
-    }
-    
-    public double calculateSubTotal() {
-        return 0.0;
-    }
 
-    public void updateStayDates(Date in, Date out) {
     }
 
 }
