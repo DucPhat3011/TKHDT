@@ -1,7 +1,7 @@
 
 public enum BookingStatus {
-	PENDING,    //đang chờ xác nhận
-    CONFIRMED,  // đã xác nhận
-    CANCELLED,  // đã hủy
-    COMPLETED   // đã hoàn thành
+	PENDING,    // dang cho xac nhan
+    CONFIRMED,  // da xac nhan
+    CANCELLED,  // da huy
+    COMPLETED   // da hoan thanh
 }

@@ -1,95 +1,103 @@
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BookingManager {
-    private List<Booking> bookings;
+	private List<Booking> bookings;
 
-    public BookingManager() {
-        this.bookings = new ArrayList<>();
-    }
+	public BookingManager() {
+		this.bookings = new ArrayList<>();
+	}
 
-  
+	// Tao booking moi trong he thong
 	public Booking createBooking(Customer customer, Room room, LocalDate checkIn, LocalDate checkOut) {
-        int newId = bookings.size() + 1;
-        java.time.LocalDateTime checkInDateTime = checkIn.atStartOfDay();
-        java.time.LocalDateTime checkOutDateTime = checkOut.atStartOfDay();
-        Booking newBooking = new Booking(newId, customer, checkInDateTime, checkOutDateTime, null, null);
-        bookings.add(newBooking);
-        return newBooking;
+		int newId = bookings.size() + 1;
+		Booking newBooking = new Booking(newId, customer, 0, null, null);
+		Date checkInDate = Date.from(checkIn.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+		Date checkOutDate = Date.from(checkOut.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
 
-    }
+		BookingDetail detail = new BookingDetail();
+		detail.setDetailId(newId);
+		detail.setRoom(room);
+		detail.setCheckInDate(checkInDate);
+		detail.setCheckOutDate(checkOutDate);
+		detail.setPriceAtBooking(room != null ? 500000 : 0);
+		detail.setNumberOfGuests(1);
 
-    public boolean updateBooking(int bookingId, Booking newData) {
-        for (int i = 0; i < bookings.size(); i++) {
-            Booking booking = bookings.get(i);
-            if (booking.getBookingId() == bookingId) {
-                bookings.set(i, newData);
-                return true;
-            }
-        }
-        return false;
-    }
+		newBooking.addBookingDetail(detail);
+		bookings.add(newBooking);
+		return newBooking;
 
-    public boolean cancelBooking(int bookingId) {
-        for (Booking booking : bookings) {
-            if (booking.getBookingId() == bookingId) {
-                if (!booking.isEligibleForCancellation()) {
-                    return false;
-                }
-                booking.cancel("Hủy bởi hệ thống");
-                return true;
-            }
-        }
-        return false;
-    }
+	}
 
-    // Xác nhận booking
-    public boolean confirmBooking(int bookingId) {
-        for (Booking booking : bookings) {
-            if (booking.getBookingId() == bookingId) {
-                booking.updateBookingStatus(BookingStatus.CONFIRMED);
-                return true;
-            }
-        }
-        return false;
-    }
+	// Cap nhat thong tin booking
+	public boolean updateBooking(int bookingId, Booking newData) {
+		for (int i = 0; i < bookings.size(); i++) {
+			Booking booking = bookings.get(i);
+			if (booking.getBookingId() == bookingId) {
+				bookings.set(i, newData);
+				return true;
+			}
+		}
+		return false;
+	}
 
-    // Lấy booking theo ID
-    public Booking getBookingById(int bookingId) {
-        for (Booking booking : bookings) {
-            if (booking.getBookingId() == bookingId) {
-                return booking;
-            }
-        }
-        return null;
-    }
+	// Huy booking theo ma
+	public boolean cancelBooking(int bookingId) {
+		for (Booking booking : bookings) {
+			if (booking.getBookingId() == bookingId) {
+				if (!booking.isEligibleForCancellation()) {
+					return false;
+				}
+				booking.cancel("Hủy bởi hệ thống");
+				return true;
+			}
+		}
+		return false;
+	}
 
-    // Lấy danh sách booking theo khách hàng
-    public List<Booking> getBookingsByCustomer(int customerId) {
-        List<Booking> result = new ArrayList<>();
-        for (Booking booking : bookings) {
-            if (booking.getCustomer() != null) {
-                result.add(booking);
-            }
-        }
-        return result;
-    }
+	// Xac nhan booking
+	public boolean confirmBooking(int bookingId) {
+		for (Booking booking : bookings) {
+			if (booking.getBookingId() == bookingId) {
+				booking.updateBookingStatus(BookingStatus.CONFIRMED);
+				return true;
+			}
+		}
+		return false;
+	}
 
-    // Cập nhật trạng thái booking
-    public void updateBookingStatus(int bookingId, BookingStatus status) {
-        for (Booking booking : bookings) {
-            if (booking.getBookingId() == bookingId) {
-                booking.updateBookingStatus(status); // Gọi method của Booking
-                return;
-            }
-        }
-    }
+	// Lay booking theo ID
+	public Booking getBookingById(int bookingId) {
+		for (Booking booking : bookings) {
+			if (booking.getBookingId() == bookingId) {
+				return booking;
+			}
+		}
+		return null;
+	}
 
-    public void attach(NotificationService notificationService) {
+	// Lay danh sach booking theo khach hang
+	public List<Booking> getBookingsByCustomer(int customerId) {
+		List<Booking> result = new ArrayList<>();
+		for (Booking booking : bookings) {
+			if (booking.getCustomer() != null && booking.getCustomer().getId() == customerId) {
+				result.add(booking);
+			}
+		}
+		return result;
+	}
 
-    }
+	// Cap nhat trang thai booking
+	public void updateBookingStatus(int bookingId, BookingStatus status) {
+		for (Booking booking : bookings) {
+			if (booking.getBookingId() == bookingId) {
+				booking.updateBookingStatus(status); // Gọi method của Booking
+				return;
+			}
+		}
+	}
+
 }
-
-

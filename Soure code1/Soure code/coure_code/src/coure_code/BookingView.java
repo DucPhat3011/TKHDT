@@ -30,21 +30,21 @@ public class BookingView extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // ===== PHẦN TRÊN: Form nhập =====
+        // ===== Form nhap =====
         JPanel formPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(4, 10, 4, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
 
-        // Mã khách hàng
+        // Ma khach hang
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
         formPanel.add(new JLabel("Ma khach hang:"), gbc);
         gbc.gridx = 1; gbc.weightx = 1.0;
         txtCustomerId = new JTextField();
         formPanel.add(txtCustomerId, gbc);
 
-        // Loại phòng
+        // Loai phong
         gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
         formPanel.add(new JLabel("Loai phong:"), gbc);
         gbc.gridx = 1; gbc.weightx = 1.0;
@@ -67,8 +67,8 @@ public class BookingView extends JFrame {
 
         add(formPanel, BorderLayout.NORTH);
 
-        // ===== PHẦN GIỮA: Bảng danh sách booking =====
-        String[] columns = {"ID Booking", "Ma KH", "Loai Phong", "Check-in", "Check-out", "Trạng Thái"};
+        // ===== Bang danh sach booking =====
+        String[] columns = {"ID Booking", "Ma KH", "Loai Phong", "Check-in", "Check-out", "Trang Thai"};
         tableModel = new DefaultTableModel(columns, 0) {
             public boolean isCellEditable(int row, int col) { return false; }
         };
@@ -78,7 +78,7 @@ public class BookingView extends JFrame {
         JScrollPane scrollPane = new JScrollPane(bookingTable);
         add(scrollPane, BorderLayout.CENTER);
 
-        // ===== PHẦN DƯỚI: Nút bấm =====
+        // ===== Nut bam =====
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY));
         btnSubmit = new JButton("Đặt Phòng");
@@ -107,7 +107,7 @@ public class BookingView extends JFrame {
 
             bookingController.handleBookingRequest(customerId, roomType, checkIn, checkOut);
 
-            // Thêm dòng mới vào bảng
+            // Them dong moi vao bang
             tableModel.addRow(new Object[]{
                 tableModel.getRowCount() + 1,
                 customerId,
@@ -117,15 +117,15 @@ public class BookingView extends JFrame {
                 "PENDING"
             });
 
-            // Reset form sau khi đặt
+            // Reset form sau khi dat
             txtCustomerId.setText("");
             txtCheckInDate.setText(LocalDate.now().toString());
             txtCheckOutDate.setText(LocalDate.now().plusDays(1).toString());
 
-            showSuccessMessage("Đat phong thanh cong cho khach " + customerId);
+            showSuccessMessage("Dat phong thanh cong cho khach " + customerId);
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Đinh dang khong hop le (dung: YYYY-MM-DD)!", "Loi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Dinh dang khong hop le (dung: YYYY-MM-DD)!", "Loi", JOptionPane.ERROR_MESSAGE);
         }
     }
 

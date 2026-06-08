@@ -4,174 +4,164 @@ import java.util.*;
 
 public class Booking implements ISubject {
 
+	private int bookingId;
+	private Customer customer;
+	private LocalDateTime bookingDate;
+	private double totalAmount;
+	private BookingStatus status;
+	private String promoCode;
+	private String note;
+	private List<IObserver> observers;
+	private List<BookingDetail> bookingDetails;
 
-    private int bookingId;
-    private Customer customer;
-    private LocalDateTime bookingDate;
-    private LocalDateTime checkInt;
-    private LocalDateTime checkOut;
-    private double totalAmount;
-    private BookingStatus status;
-    private String promoCode;
-    private String note;
-    private List<IObserver> observers;
+	public Booking(int bookingId, Customer customer, double totalAmount, String promoCode, String note) {
+		this.bookingId = bookingId;
+		this.customer = customer;
+		this.bookingDate = LocalDateTime.now();
+		this.totalAmount = totalAmount;
+		this.status = BookingStatus.PENDING;
+		this.promoCode = promoCode;
+		this.note = note;
+		this.observers = new ArrayList<IObserver>();
+		this.bookingDetails = new ArrayList<BookingDetail>();
+	}
 
+	// Them chi tiet dat phong
+	public void addBookingDetail(BookingDetail detail) {
+		this.bookingDetails.add(detail);
+		calculateTotalAmount();
+	}
 
-    public Booking(int bookingId, Customer customer,
-                   LocalDateTime checkInt, LocalDateTime checkOut, //  Sửa LocalDate → LocalDateTime
-                   String promoCode, String note) {
-        this.bookingId = bookingId;
-        this.customer = customer;
-        this.bookingDate = LocalDateTime.now();
-        this.checkInt = checkInt;
-        this.checkOut = checkOut;
-        this.status = BookingStatus.PENDING;
-        this.promoCode = promoCode;
-        this.note = note;
-        this.observers = new ArrayList<>();
-    }
+	// Tinh tong tien dua tren subtotal cua tat ca cac chi tiet phong
+	public double calculateTotalAmount() {
+		this.totalAmount = 0;
+		for (BookingDetail bookingDetail : bookingDetails) {
+			this.totalAmount += bookingDetail.calculateSubTotal();
+		}
+		return this.totalAmount;
+	}
 
+	// Them observer vao danh sach theo doi
+	@Override
+	public void attach(IObserver obs) {
+		observers.add(obs);
+	}
 
-    // Thêm observer vào danh sách theo dõi
-    @Override
-    public void attach(IObserver obs) {
-        observers.add(obs);
-    }
+	// Xoa observer khoi danh sach theo doi
+	@Override
+	public void detach(IObserver obs) {
+		observers.remove(obs);
+	}
 
-    // Xóa observer khỏi danh sách theo dõi
-    @Override
-    public void detach(IObserver obs) {
-        observers.remove(obs);
-    }
+	// Thong bao cho tat ca cac observer khi co thay doi
+	@Override
+	public void notifyObservers() {
+		String message = "ID phòng: " + bookingId + " - Trạng thái: " + status;
+		for (IObserver observer : observers) {
+			observer.update(message);
+		}
+	}
 
-    // Thông báo cho tất cả observer khi có thay đổi thêm @Override
-    @Override
-    public void notifyObservers() {
-        String message = "ID phòng: " + bookingId + " - Trạng thái: " + status;
-        for (IObserver observer : observers) {
-            observer.update(message);
-        }
-    }
+	// Huy booking
+	public boolean cancel(String reason) {
+		if (!isEligibleForCancellation()) {
+			return false;
+		}
+		this.note = reason;
+		this.status = BookingStatus.CANCELLED;
+		notifyObservers();
+		return true;
+	}
 
+	// Tinh tien hoan lai khi huy phong
+	public double getRefundAmount() {
+		if (!isEligibleForCancellation()) {
+			return 0.0;
+		}
+		if (status == BookingStatus.PENDING) {
+			return totalAmount;
+		} else {
+			return totalAmount * 0.5;
+		}
+	}
 
-    // Hủy booking với lý do hủy
-    public boolean cancel(String reason) {
-        if (!isEligibleForCancellation()) {
-            return false;
-        }
-        this.note = reason;
-        this.status = BookingStatus.CANCELLED;
-        notifyObservers();
-        return true;
-    }
+	// Cap nhat trang thai booking va thong bao cho observer
+	public boolean updateBookingStatus(BookingStatus newStatus) {
+		this.status = newStatus;
+		notifyObservers();
+		return true;
+	}
 
-    // Tính số tiền hoàn lại khi hủy phòng
-    public double getRefundAmount() {
-        if (!isEligibleForCancellation()) {
-            return 0.0;
-        }
-        if (status == BookingStatus.PENDING) {
-            return totalAmount;
-        } else {
-            return totalAmount * 0.5;
-        }
-    }
+	// Kiem tra booking co du dieu kien huy khong
+	public boolean isEligibleForCancellation() {
+		return status == BookingStatus.PENDING || status == BookingStatus.CONFIRMED;
+	}
 
-    // Cập nhật trạng thái booking và thông báo cho observer
-    public boolean updateBookingStatus(BookingStatus newStatus) {
-        this.status = newStatus;
-        notifyObservers();
-        return true;
-    }
+	// Tinh phan tram tien hoan lai
+	public double getAvailableRefundPercentage() {
+		if (!isEligibleForCancellation()) {
+			return 0.0; // Khong the huy → 0%
+		}
+		if (status == BookingStatus.PENDING) {
+			return 100.0; // Hoan 100%
+		}
+		return 50.0; // Hoan 50%
+	}
 
-    // Kiểm tra booking có đủ điều kiện hủy không
-    public boolean isEligibleForCancellation() {
-        return status == BookingStatus.PENDING || status == BookingStatus.CONFIRMED;
-    }
+	public int getBookingId() {
+		return bookingId;
+	}
 
-    // Tính phần trăm tiền hoàn lại
-    public double getAvailableRefundPercentage() {
-        if (!isEligibleForCancellation()) {
-            return 0.0; // Không thể hủy → 0%
-        }
-        if (status == BookingStatus.PENDING) {
-            return 100.0; // Hoàn 100%
-        }
-        return 50.0; // Hoàn 50%
-    }
+	public Customer getCustomer() {
+		return customer;
+	}
 
+	public LocalDateTime getBookingDate() {
+		return bookingDate;
+	}
 
+	public double getTotalAmount() {
+		return totalAmount;
+	}
 
-    public int getBookingId() {
-        return bookingId;
-    }
+	public BookingStatus getStatus() {
+		return status;
+	}
 
-    public Customer getCustomer() {
-        return customer;
-    }
+	public String getPromoCode() {
+		return promoCode;
+	}
 
-    public LocalDateTime getBookingDate() {
-        return bookingDate;
-    }
+	public String getNote() {
+		return note;
+	}
 
-    public double getTotalAmount() {
-        return totalAmount;
-    }
+	public void setBookingId(int bookingId) {
+		this.bookingId = bookingId;
+	}
 
-    public BookingStatus getStatus() {
-        return status;
-    }
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
-    public String getPromoCode() {
-        return promoCode;
-    }
+	public void setBookingDate(LocalDateTime bookingDate) {
+		this.bookingDate = bookingDate;
+	}
 
-    public String getNote() {
-        return note;
-    }
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
 
-    public LocalDateTime getCheckInDate() {
-        return checkInt;
-    }
+	public void setStatus(BookingStatus status) {
+		this.status = status;
+	}
 
-    public LocalDateTime getCheckOutDate() {
-        return checkOut;
-    }
+	public void setPromoCode(String promoCode) {
+		this.promoCode = promoCode;
+	}
 
+	public void setNote(String note) {
+		this.note = note;
+	}
 
-    public void setBookingId(int bookingId) {
-        this.bookingId = bookingId;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public void setBookingDate(LocalDateTime bookingDate) {
-        this.bookingDate = bookingDate;
-    }
-
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public void setStatus(BookingStatus status) {
-        this.status = status;
-    }
-
-    public void setPromoCode(String promoCode) {
-        this.promoCode = promoCode;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public void setCheckInDate(LocalDateTime checkInDate) {
-        this.checkInt = checkInDate;
-    }
-
-    public void setCheckOutDate(LocalDateTime checkOutDate) {
-        this.checkOut = checkOutDate;
-    }
 }

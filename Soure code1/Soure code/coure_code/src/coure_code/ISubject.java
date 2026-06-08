@@ -1,9 +1,11 @@
 
 public interface ISubject {
-    //Thêm
-    void attach(IObserver obs);
-    //xóa
-    void detach(IObserver obs);
-    //Thông báo
-    void notifyObservers();
+	// Them
+	void attach(IObserver obs);
+
+	// Xoa
+	void detach(IObserver obs);
+
+	// Thong bao
+	void notifyObservers();
 }
