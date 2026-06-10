@@ -56,7 +56,7 @@ public class Booking implements ISubject {
 	// Thong bao cho tat ca cac observer khi co thay doi
 	@Override
 	public void notifyObservers() {
-		String message = "ID phòng: " + bookingId + " - Trạng thái: " + status;
+		String message = "ID phong: " + bookingId + " - Trang thái: " + status;
 		for (IObserver observer : observers) {
 			observer.update(message);
 		}

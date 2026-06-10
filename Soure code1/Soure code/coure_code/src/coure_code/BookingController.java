@@ -14,7 +14,7 @@ public class BookingController {
 		Customer customer = new Customer(1, customerId, "", "", "", "", "", "", "", 0, null);
 		Room room = roomFactory.createRoom(roomType);
 		if (room == null) {
-			System.out.println("Lỗi: Loai phong khong hop le!");
+			System.out.println("Loi: Loai phong khong hop le!");
 			return;
 		}
 		Booking newBooking = bookingManager.createBooking(customer, room, checkIn, checkOut);

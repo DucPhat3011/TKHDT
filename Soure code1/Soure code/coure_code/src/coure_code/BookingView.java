@@ -81,7 +81,7 @@ public class BookingView extends JFrame {
         // ===== Nut bam =====
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY));
-        btnSubmit = new JButton("Đặt Phòng");
+        btnSubmit = new JButton("Datt Phong");
         btnSubmit.setPreferredSize(new Dimension(120, 28));
         bottomPanel.add(btnSubmit);
         add(bottomPanel, BorderLayout.SOUTH);

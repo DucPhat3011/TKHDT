@@ -51,7 +51,7 @@ public class BookingManager {
 				if (!booking.isEligibleForCancellation()) {
 					return false;
 				}
-				booking.cancel("Hủy bởi hệ thống");
+				booking.cancel("Huy boi he thong");
 				return true;
 			}
 		}
@@ -94,7 +94,7 @@ public class BookingManager {
 	public void updateBookingStatus(int bookingId, BookingStatus status) {
 		for (Booking booking : bookings) {
 			if (booking.getBookingId() == bookingId) {
-				booking.updateBookingStatus(status); // Gọi method của Booking
+				booking.updateBookingStatus(status);
 				return;
 			}
 		}
