@@ -1,79 +1,52 @@
-import java.util.Date;
+package coure_code;
+
+import java.util.*;
+
 
 public class StayRecord {
-	private int recordId;
-	private Date actualCheckIn;
-	private Date actualCheckOut;
-	private BookingDetail bookingDetail;
-	private String checkInNote;
+    private int recordId;
+    private Date actualCheckIn;
+    private Date actualCheckOut;
+    private BookingDetail bookingDetail;
+    private String checkInNote;
+    private List<ServiceUsage> serviceUsages; // Các dịch vụ đã dùng
 
-	public StayRecord(int recordId, Date actualCheckIn, Date actualCheckOut, BookingDetail bookingDetail,
-			String checkInNote) {
-		this.recordId = recordId;
-		this.actualCheckIn = actualCheckIn;
-		this.actualCheckOut = actualCheckOut;
-		this.bookingDetail = bookingDetail;
-		this.checkInNote = checkInNote;
-	}
+    public StayRecord(int recordId, BookingDetail bookingDetail, String checkInNote) {
+        this.recordId = recordId;
+        this.actualCheckIn = new Date();
+        this.bookingDetail = bookingDetail;
+        this.checkInNote = checkInNote;
+        this.serviceUsages = new ArrayList<>();
+    }
 
-	public int getRecordId() {
-		return recordId;
-	}
+    public void addService(Services service, int quantity) {
+        ServiceUsage usage = new ServiceUsage(serviceUsages.size() + 1, quantity, service, this);
+        serviceUsages.add(usage);
+        System.out.println("Đã cập nhật dịch vụ: " + service.getServiceName() + " vào hóa đơn phòng.");
+    }
 
-	public void setRecordId(int recordId) {
-		this.recordId = recordId;
-	}
+    public void removeService(int serviceId) {
+        serviceUsages.removeIf(usage -> usage.getService().getServiceId() == serviceId);
+    }
 
-	public Date getActualCheckIn() {
-		return actualCheckIn;
-	}
+    public double calculateTotalServiceCost() {
+        double total = 0;
+        for (ServiceUsage usage : serviceUsages) {
+            total += usage.calculateServiceCharge();
+        }
+        return total;
+    }
 
-	public void setActualCheckIn(Date actualCheckIn) {
-		this.actualCheckIn = actualCheckIn;
-	}
+    public void updateActualCheckOut(Date time) {
+        this.actualCheckOut = time;
+    }
 
-	public Date getActualCheckOut() {
-		return actualCheckOut;
-	}
+    public void applyExtraCharges(String description, double amount) {
+        System.out.println("Phụ thu phí phát sinh: " + description + " - " + amount);
+    }
 
-	public void setActualCheckOut(Date actualCheckOut) {
-		this.actualCheckOut = actualCheckOut;
-	}
-
-	public BookingDetail getBookingDetail() {
-		return bookingDetail;
-	}
-
-	public void setBookingDetail(BookingDetail bookingDetail) {
-		this.bookingDetail = bookingDetail;
-	}
-
-	public String getCheckInNote() {
-		return checkInNote;
-	}
-
-	public void setCheckInNote(String checkInNote) {
-		this.checkInNote = checkInNote;
-	}
-
-	public void addService(Services service, int quantity) {
-	}
-
-	public void removeService(int serviceId) {
-	}
-
-	public double calculateTotalServiceCost() {
-		return 0.0;
-	}
-
-	public void updateActualCheckOut(Date time) {
-	}
-
-	public void applyExtraCharges(String description, double amount) {
-	}
-
-	public Invoice generateInvoice() {
-		return null;
-	}
-
+    public Invoice generateInvoice() {
+        System.out.println("Đang kết xuất hệ thống hóa đơn lưu trú...");
+        return null;
+    }
 }

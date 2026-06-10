@@ -1,44 +1,27 @@
+package coure_code;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceManager {
-	private List<Services> services;
-	private IPriceStrategy priceStrategy;
+    private List<Services> serviceList;
 
-	public ServiceManager(List<Services> services, IPriceStrategy priceStrategy) {
-		this.services = services;
-		this.priceStrategy = priceStrategy;
-	}
+    public ServiceManager() {
+        this.serviceList = new ArrayList<>();
+    }
 
-	public List<Services> getServices() {
-		return services;
-	}
+    public void addService(Services service) {
+        serviceList.add(service);
+    }
 
-	public void setServices(List<Services> services) {
-		this.services = services;
-	}
+    public void removeService(int serviceId) {
+        serviceList.removeIf(s -> s.getServiceId() == serviceId);
+    }
 
-	public IPriceStrategy getPriceStrategy() {
-		return priceStrategy;
-	}
-
-	public void addService(Services service) {
-	}
-
-	public void updateService(int serviceId, Services service) {
-	}
-
-	public void deleteService(int serviceId) {
-	}
-
-	public List<Services> getAllServices() {
-		return null;
-	}
-
-	public void setPriceStrategy(IPriceStrategy strategy) {
-	}
-
-	public double calculateServicePrice(Services service) {
-		return 0.0;
-	}
-
+    public void updateServicePrice(int serviceId, double newPrice) {
+        for (Services s : serviceList) {
+            if (s.getServiceId() == serviceId) {
+                s.updatePrice(newPrice);
+            }
+        }
+    }
 }
