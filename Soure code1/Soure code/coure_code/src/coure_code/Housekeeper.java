@@ -8,7 +8,7 @@ public class Housekeeper extends Employee {
     }
 
     public void updateRoomStatus(int roomId, RoomStatus status) {
-        System.out.println("Nhân viên dọn phòng đã cập nhật phòng " + roomId + " sang trạng thái: " + status);
+        System.out.println("Nhan vien don phong  " + roomId + " sang trang thai: " + status);
     }
 
     @Override

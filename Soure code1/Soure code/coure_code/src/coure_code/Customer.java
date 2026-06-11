@@ -14,24 +14,25 @@ public class Customer extends User {
         this.loyaltyPoints = 0;
         this.memberSince = new Date();
     }
+    
     public void register() {
         this.memberSince = new Date();
         this.loyaltyPoints = 0;
-        System.out.println("Khách hàng đã đăng ký thành viên thành công.");
+        System.out.println("Khach hang da dang ky thanh vien thanh cong.");
     }
 
     public List<Booking> getBookingHistory() {
-        System.out.println("Đang truy xuất lịch sử đặt phòng...");
-        return new ArrayList<>(); // Trả về danh sách rỗng để không bị lỗi
+        System.out.println("Dang truy xuat lich su dat phong...");
+        return new ArrayList<>(); 
     }
 
     public void updateLoyaltyPoints(int points) {
         this.loyaltyPoints += points;
-        System.out.println("Điểm tích lũy hiện tại: " + this.loyaltyPoints);
+        System.out.println("Diem tich luy hien tai: " + this.loyaltyPoints);
     }
 
     public List<Booking> getActiveBookings() {
-        System.out.println("Đang lấy các đơn đặt phòng hiện tại...");
+        System.out.println("Dang lay cac don dat phong hien tai...");
         return new ArrayList<>();
     }
     

@@ -19,10 +19,9 @@ public abstract class Employee extends User {
     }
 
     public String getWorkSchedule() {
-        return "Ca làm việc tiêu chuẩn: 8h00 - 17h00";
+        return "Ca lam: 8h00 - 17h00";
     }
 
-    // Hàm Đa hình giúp tính lương cho từng vị trí cụ thể
     public abstract double calculateSalary();
 
     public double getSalary() {
