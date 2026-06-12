@@ -30,7 +30,7 @@ public class Staff extends Employee {
     public void adjustInvoice(int invoiceId, double amount) {
         System.out.println("Da dieu chinh hoa don " + invoiceId + " voi so tien: " + amount);
     }
-}
+
     @Override
     public double calculateSalary() {
         return getSalary() * 1.5; 
