@@ -22,7 +22,7 @@ public class StayRecord {
     public void addService(Services service, int quantity) {
         ServiceUsage usage = new ServiceUsage(serviceUsages.size() + 1, quantity, service, this);
         serviceUsages.add(usage);
-        System.out.println("Đã cập nhật dịch vụ: " + service.getServiceName() + " vào hóa đơn phòng.");
+        System.out.println("Da cap nhat dich vu: " + service.getServiceName() );
     }
 
     public void removeService(int serviceId) {
@@ -42,11 +42,11 @@ public class StayRecord {
     }
 
     public void applyExtraCharges(String description, double amount) {
-        System.out.println("Phụ thu phí phát sinh: " + description + " - " + amount);
+        System.out.println("Phu Thu: " + description + " - " + amount);
     }
 
     public Invoice generateInvoice() {
-        System.out.println("Đang kết xuất hệ thống hóa đơn lưu trú...");
+        System.out.println("Dang Xuat Hoa Don");
         return null;
     }
 }

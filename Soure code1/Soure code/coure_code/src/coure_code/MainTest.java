@@ -381,59 +381,47 @@ public class MainTest extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // 1. Khu vực nhập liệu bên trái
         JPanel panelInput = new JPanel(new GridLayout(4, 2, 5, 5));
-        panelInput.setBorder(BorderFactory.createTitledBorder(" Thao tác dọn phòng "));
+        panelInput.setBorder(BorderFactory.createTitledBorder(" Thao tac "));
         panelInput.setPreferredSize(new Dimension(350, 0));
 
         JTextField txtRoomId = new JTextField();
-        // Giả lập Enum RoomStatus thành các chuỗi String để chọn trên giao diện
         JComboBox<String> cbRoomStatus = new JComboBox<>(new String[]{
-            "AVAILABLE (Trống, sạch sẽ)", 
-            "CLEANING (Đang dọn dẹp)", 
-            "OCCUPIED (Đang có khách)", 
-            "MAINTENANCE (Đang bảo trì)"
+            "AVAILABLE ", 
+            "CLEANING ", 
+            "OCCUPIED ", 
+            "MAINTENANCE "
         });
 
-        panelInput.add(new JLabel("Nhập ID Phòng cần dọn:")); 
+        panelInput.add(new JLabel("Nhap ID Phong can don:")); 
         panelInput.add(txtRoomId);
-        panelInput.add(new JLabel("Chuyển sang trạng thái:")); 
+        panelInput.add(new JLabel("Chuyen sang trang thai:")); 
         panelInput.add(cbRoomStatus);
 
-        JButton btnUpdateStatus = new JButton("Cập nhật Trạng thái");
+        JButton btnUpdateStatus = new JButton("Cap nhat Trang thai");
         btnUpdateStatus.setBackground(new Color(51, 153, 255));
         btnUpdateStatus.setForeground(Color.WHITE);
         
-        panelInput.add(new JLabel("")); // Ô trống để căn chỉnh layout
+        panelInput.add(new JLabel(""));
         panelInput.add(btnUpdateStatus);
 
-        // 2. Khu vực Bảng hiển thị danh sách phòng bên phải
-        String[] columns = {"ID Phòng", "Số Phòng", "Tình trạng hiện tại"};
+        String[] columns = {"ID Phong", "So Phong", "Tinh trang hien tai"};
         DefaultTableModel roomTableModel = new DefaultTableModel(columns, 0);
         JTable roomTable = new JTable(roomTableModel);
         
-        // Thêm dữ liệu giả lập cho danh sách phòng
-        roomTableModel.addRow(new Object[]{101, "P.101", "CLEANING (Đang dọn dẹp)"});
-        roomTableModel.addRow(new Object[]{102, "P.102", "AVAILABLE (Trống, sạch sẽ)"});
-        roomTableModel.addRow(new Object[]{201, "P.201", "OCCUPIED (Đang có khách)"});
+        roomTableModel.addRow(new Object[]{101, "P.101", "CLEANING (Dang don dep)"});
+        roomTableModel.addRow(new Object[]{102, "P.102", "AVAILABLE (Trong, sach se)"});
+        roomTableModel.addRow(new Object[]{201, "P.201", "OCCUPIED (Dang co khach)"});
 
-        // 3. Sự kiện bấm nút "Cập nhật Trạng thái"
         btnUpdateStatus.addActionListener(e -> {
             try {
                 int roomId = Integer.parseInt(txtRoomId.getText());
                 String selectedStatus = (String) cbRoomStatus.getSelectedItem();
 
-                // Tạo một đối tượng Housekeeper để gọi hàm nghiệp vụ
-                // Sử dụng Constructor đầy đủ tham số như bạn vừa cung cấp
-                Housekeeper hk = new Housekeeper(4, "hk01", "123", "hk@hotel.com", "Cô lao công", "0999", "HCM", "NV04", 5000000, "Ca Sáng");
+                Housekeeper hk = new Housekeeper(4, "hk01", "123", "hk@hotel.com", "Co lao cong", "0999", "HCM", "NV04", 5000000, "Ca Sang");
 
-                // Giả lập việc gọi hàm có tham số RoomStatus (Ở đây truyền String để tránh lỗi biên dịch nếu bạn chưa tạo enum RoomStatus)
-                // hk.updateRoomStatus(roomId, RoomStatus.valueOf(selectedStatus)); 
-                
-                // In ra Console đúng như logic trong class Housekeeper của bạn
                 System.out.println("Nhan vien don phong  " + roomId + " sang trang thai: " + selectedStatus);
 
-                // Cập nhật lại giao diện Bảng (Tìm đúng ID phòng để đổi trạng thái)
                 boolean found = false;
                 for (int i = 0; i < roomTableModel.getRowCount(); i++) {
                     if ((int) roomTableModel.getValueAt(i, 0) == roomId) {
@@ -444,17 +432,16 @@ public class MainTest extends JFrame {
                 }
 
                 if (found) {
-                    JOptionPane.showMessageDialog(this, "Nhân viên Buồng phòng đã cập nhật Phòng " + roomId + "\nThành trạng thái: " + selectedStatus);
+                    JOptionPane.showMessageDialog(this, "Nhan vien Buong phong da cap nhat Phong " + roomId + "\nThanh trang thai: " + selectedStatus);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Không tìm thấy phòng có ID: " + roomId + " trong hệ thống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Khong tim thay phong co ID: " + roomId + " trong he thong!", "Loi", JOptionPane.ERROR_MESSAGE);
                 }
 
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Vui lòng nhập ID Phòng là một số nguyên!", "Lỗi nhập liệu", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Vui long nhap ID Phong la mot so nguyen!", "Loi nhap lieu", JOptionPane.WARNING_MESSAGE);
             }
         });
 
-        // 4. Gộp vào Panel chính
         panel.add(panelInput, BorderLayout.WEST);
         panel.add(new JScrollPane(roomTable), BorderLayout.CENTER);
 

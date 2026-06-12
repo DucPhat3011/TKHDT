@@ -12,7 +12,7 @@ public class ServiceManager {
             this.services = new ArrayList<>();
         }
         this.services.add(service);
-        System.out.println("Đã thêm dịch vụ: " + service.getServiceName());
+        System.out.println("Da them dich vu: " + service.getServiceName());
     }
 
     public void updateService(int serviceId, Services updatedService) {
@@ -20,21 +20,21 @@ public class ServiceManager {
             for (int i = 0; i < this.services.size(); i++) {
                 if (this.services.get(i).getServiceId() == serviceId) {
                     this.services.set(i, updatedService);
-                    System.out.println("Đã cập nhật dịch vụ có ID: " + serviceId);
+                    System.out.println("Da cap nhat dich vu co ID: " + serviceId);
                     return;
                 }
             }
         }
-        System.out.println("Không tìm thấy dịch vụ ID: " + serviceId);
+        System.out.println("Khong tim thay dich vu ID: " + serviceId);
     }
 
     public void deleteService(int serviceId) {
         if (this.services != null) {
             boolean isRemoved = this.services.removeIf(s -> s.getServiceId() == serviceId);
             if (isRemoved) {
-                System.out.println("Hệ thống đã xóa dịch vụ có ID: " + serviceId);
+                System.out.println("He thong da xoa dich vu co ID: " + serviceId);
             } else {
-                System.out.println("Không tìm thấy dịch vụ ID: " + serviceId + " để xóa.");
+                System.out.println("Khong tim thay dich vu ID: " + serviceId + " de xoa.");
             }
         }
     }

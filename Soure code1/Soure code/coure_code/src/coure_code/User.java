@@ -16,7 +16,7 @@ public abstract class User {
     public boolean login(String username, String password) {
         return this.username.equals(username) && this.password.equals(password);
     }
-    public void logout() { System.out.println(username + " đã đăng xuất."); }
+    public void logout() { System.out.println(username + " Dang Xuat"); }
     public boolean changePassword(String oldPass, String newPass) {
         if (this.password.equals(oldPass)) { this.password = newPass; return true; }
         return false;
