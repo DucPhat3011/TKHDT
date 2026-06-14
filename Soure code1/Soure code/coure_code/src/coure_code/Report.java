@@ -80,14 +80,16 @@ public class Report implements IReport {
 	// tao bao cao
 	@Override
 	public void generate() {
-		System.out.println("Generating report: " + title);
+        this.generateDate = new Date();
+        this.data = "Dữ liệu được tạo tự động cho báo cáo: " + this.title;
+        System.out.println("Đã sinh dữ liệu cho báo cáo: " + this.title);
 	}
 
 	// xuat bao cao ra file
 	@Override
 	public File export(String format) {
-		System.out.println("Exporting " + title + " to " + format);
-        return new File(title + "." + format);
+		System.out.println("Đang xuất báo cáo '" + this.title + "' ra định dạng: " + format);
+        return new File(title.replaceAll("\\s+", "_") + "." + format);
 	}
 	
 	@Override
