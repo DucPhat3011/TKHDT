@@ -27,13 +27,11 @@ public class ReportController {
 	public IReport getCurrentReport() {
         return currentReport;
     }
-
-	// lay controller dang su dung
+	
 	public ReportService getReportService() {
 		return reportService;
 	}
-
-	// gan controller cho giao dien
+	
 	public void setReportService(ReportService reportService) {
 		this.reportService = reportService;
 	}
