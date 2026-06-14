@@ -11,6 +11,7 @@ public class ReportView extends JFrame {
 	// hien thi thong tin bao cao len giao dien
 	public void displayReport(IReport reportData) {
         if (reportData != null) {
+			// hien thi len UI
             System.out.println("--- GIAO DIỆN HIỂN THỊ ---");
             System.out.println("Tiêu đề: " + reportData.getTitle());
             System.out.println("--------------------------");
@@ -21,7 +22,7 @@ public class ReportView extends JFrame {
 	public void onExportPDFClick() {
         if (reportController != null) {
             reportController.exportReport("pdf");
-            // Hiển thị thông báo lên UI Swing
+            // Hien thi thong bao len UI Swing
             JOptionPane.showMessageDialog(this, "Xuất file PDF thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Controller chưa được khởi tạo!", "Lỗi", JOptionPane.ERROR_MESSAGE);
