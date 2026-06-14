@@ -9,10 +9,12 @@ public class ReportController {
 		this.reportService = reportService;
 	}
 
+	// yeu cau tao bao cao
 	public void generateReport(String reportType, Date startDate, Date endDate) {
 		currentReport = reportService.getReport(reportType, startDate, endDate);
 	}
 
+	// yeu cau xuat bao cao
 	public void exportReport(String format) {
 		if (currentReport != null) {
             File file = reportService.exportReport(currentReport, format);
@@ -21,15 +23,17 @@ public class ReportController {
             System.out.println("No report to export.");
         }
 	}
-
+	
 	public IReport getCurrentReport() {
         return currentReport;
     }
-	
+
+	// lay controller dang su dung
 	public ReportService getReportService() {
 		return reportService;
 	}
 
+	// gan controller cho giao dien
 	public void setReportService(ReportService reportService) {
 		this.reportService = reportService;
 	}
