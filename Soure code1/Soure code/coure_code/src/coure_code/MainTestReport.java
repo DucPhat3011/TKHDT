@@ -19,6 +19,7 @@ public class MainTestReport {
 		c.add(Calendar.DATE, 7);
 		Date endDate = c.getTime();
 
+		
 		System.out.println("\n--- THỬ NGHIỆM 1: BÁO CÁO ĐƠN LẺ (SINGLE REPORT) ---");
 		// controller yeu cau tao bao cao "Doanh Thu"
 		reportController.generateReport("Doanh Thu Tháng 6", startDate, endDate);
@@ -30,6 +31,7 @@ public class MainTestReport {
 		System.out.println("[User Click]: Nút Xuất PDF");
 		reportView.onExportPDFClick();
 
+		
 		System.out.println("\n--- THỬ NGHIỆM 2: BÁO CÁO TỔNG HỢP (COMPOSITE PATTERN) ---");
 		// Gia su can tong hop nhieu loai bao cao cung luc
 		System.out.println("Đang yêu cầu hệ thống gom nhóm báo cáo...");
@@ -46,6 +48,7 @@ public class MainTestReport {
 		// Xuat file cho toan bo bao cao tong hop nay duoi dang Excel (.xlsx)
 		reportService.exportReport(compositeReport, "xlsx");
 
+		
 		System.out.println("\n--- THỬ NGHIỆM 3: KIỂM TRA MÃ KHUYẾN MÃI (PROMOTION) ---");
 		// Tao mot ma het han (Ngay hom qua)
 		c.setTime(new Date());
