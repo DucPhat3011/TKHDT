@@ -11,7 +11,9 @@ public class ReportController {
 
 	// yeu cau tao bao cao
 	public void generateReport(String reportType, Date startDate, Date endDate) {
+		// yeu cau Service lay bao cao
         this.currentReport = reportService.getReport(reportType, startDate, endDate);
+		// sinh du lieu bao cao
         if (this.currentReport != null) {
             this.currentReport.generate();
             System.out.println("Đã hoàn tất việc tạo báo cáo trên Controller.");
