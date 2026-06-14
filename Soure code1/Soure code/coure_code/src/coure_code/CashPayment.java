@@ -30,6 +30,12 @@ public class CashPayment extends Payment {
 	@Override
 	public boolean processPayment(double amount) {
 		// TODO Auto-generated method stub
+		if (cashReceived >= amount) {
+			changeGiven = cashReceived - amount;
+			setStatus(PaymentStatus.SUCCESS);
+			return true;
+		}
+		setStatus(PaymentStatus.FAILED);
 		return false;
 	}
 

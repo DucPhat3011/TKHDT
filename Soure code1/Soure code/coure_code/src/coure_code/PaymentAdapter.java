@@ -16,6 +16,8 @@ public class PaymentAdapter implements IPaymentGateway {
 
 	@Override
 	public boolean pay(double amount) {
-		return false;
+		String result = api.executePayment(amount);
+
+		return result.equals("SUCCESS");
 	}
 }

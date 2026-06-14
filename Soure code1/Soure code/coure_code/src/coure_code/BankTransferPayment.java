@@ -30,6 +30,14 @@ public class BankTransferPayment extends Payment {
 	@Override
 	public boolean processPayment(double amount) {
 		// TODO Auto-generated method stub
+		if (bankName != null && !bankName.trim().isEmpty() && transactionId != null
+				&& !transactionId.trim().isEmpty()) {
+
+			setStatus(PaymentStatus.SUCCESS);
+			return true;
+		}
+
+		setStatus(PaymentStatus.FAILED);
 		return false;
 	}
 

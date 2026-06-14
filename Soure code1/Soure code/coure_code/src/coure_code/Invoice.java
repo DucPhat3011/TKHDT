@@ -119,27 +119,44 @@ public class Invoice {
 	}
 
 	public double calculateSubTotal() {
-		return 0;
+		subtotal = roomFee + serviceFee;
+		return subtotal;
 	}
 
 	public double calculateTax() {
-		return 0;
+		tax = subtotal * 0.1;
+
+		return tax;
 	}
 
 	public void applyPromotion(Promotion promo) {
+		calculateSubTotal();
 
+		if (promo != null && promo.isValid()) {
+
+			this.appliedPromotion = promo;
+
+			discount = subtotal * (promo.getDiscountPercent() / 100);
+		}
 	}
 
 	public double calculateFinalAmount() {
-		return 0;
+		calculateSubTotal();
+
+		calculateTax();
+
+		totalAmount = subtotal + tax - discount;
+
+		return totalAmount;
 	}
 
 	public String getFormattedInvoice() {
-		return " ";
+		return "Invoice ID: " + invoiceId + "\nRoom Fee: " + roomFee + "\nService Fee: " + serviceFee + "\nSubtotal: "
+				+ subtotal + "\nDiscount: " + discount + "\nTax: " + tax + "\nTotal Amount: " + totalAmount
+				+ "\nStatus: " + status;
 	}
 
 	public File generatePDF() {
-		return null;
-
+		return new File("Invoice_" + invoiceId + ".pdf");
 	}
 }

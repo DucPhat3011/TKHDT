@@ -1,6 +1,9 @@
 
 public class ExternalPaymentAPI {
 	public String executePayment(double total) {
-        return "";
-    }
+		if (total > 0) {
+			return "SUCCESS";
+		}
+		return "FAILED";
+	}
 }
