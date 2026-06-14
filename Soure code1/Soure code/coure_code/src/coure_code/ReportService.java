@@ -6,7 +6,7 @@ import java.util.List;
 public class ReportService {
 	// tao va tra ve bao cao theo loai va khoang thoi gian
     public Report getReport(String type, Date startDate, Date endDate) {
-        // Thực tế sẽ query vào Database, ở đây trả về mock data
+        // query vao Database, o day tra ve mock data
         return new Report(
             (int) (Math.random() * 1000), 
             "Báo cáo " + type, 
