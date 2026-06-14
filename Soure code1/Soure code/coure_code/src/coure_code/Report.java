@@ -1,5 +1,5 @@
-import java.util.Date;
 import java.io.File;
+import java.util.Date;
 
 public class Report implements IReport {
 	private int reportId;
@@ -79,20 +79,18 @@ public class Report implements IReport {
 
 	@Override
 	public void generate() {
-		// TODO Auto-generated method stub
-
+		System.out.println("Generating report: " + title);
 	}
 
 	@Override
 	public File export(String format) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("Exporting " + title + " to " + format);
+        return new File(title + "." + format);
 	}
 
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		return title;
 	}
 
 }
