@@ -11,16 +11,22 @@ public class ReportController {
 
 	// yeu cau tao bao cao
 	public void generateReport(String reportType, Date startDate, Date endDate) {
-		currentReport = reportService.getReport(reportType, startDate, endDate);
+        this.currentReport = reportService.getReport(reportType, startDate, endDate);
+        if (this.currentReport != null) {
+            this.currentReport.generate();
+            System.out.println("Đã hoàn tất việc tạo báo cáo trên Controller.");
+        }
 	}
 
 	// yeu cau xuat bao cao
 	public void exportReport(String format) {
-		if (currentReport != null) {
-            File file = reportService.exportReport(currentReport, format);
-            System.out.println("Exported file: " + file.getAbsolutePath());
+        if (this.currentReport != null) {
+            File exportedFile = reportService.exportReport(this.currentReport, format);
+            if (exportedFile != null) {
+                System.out.println("File báo cáo đã lưu tại: " + exportedFile.getName());
+            }
         } else {
-            System.out.println("No report to export.");
+            System.out.println("Không có báo cáo nào để xuất. Vui lòng tạo báo cáo trước!");
         }
 	}
 	
