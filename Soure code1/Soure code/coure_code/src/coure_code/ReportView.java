@@ -9,30 +9,29 @@ public class ReportView extends JFrame {
     }
 
 	// hien thi thong tin bao cao len giao dien
-	public void displayReport(Report reportData) {
-		JOptionPane.showMessageDialog( this, "Title: " + reportData.getTitle() 
-										+ "\nType: " + reportData.getType()  
-										+ "\nData: " 
-										+ reportData.getData(), "Report",  
-										JOptionPane.INFORMATION_MESSAGE);
+	public void displayReport(IReport reportData) {
+        if (reportData != null) {
+            System.out.println("--- GIAO DIỆN HIỂN THỊ ---");
+            System.out.println("Tiêu đề: " + reportData.getTitle());
+            System.out.println("--------------------------");
+        }
 	}
 
 	// xu ly su kien khi nguoi dung nhan nut Export PDF
 	public void onExportPDFClick() {
-		if (reportController != null) {
+        if (reportController != null) {
             reportController.exportReport("pdf");
-            JOptionPane.showMessageDialog(this, "Export PDF successfully!");
+            // Hiển thị thông báo lên UI Swing
+            JOptionPane.showMessageDialog(this, "Xuất file PDF thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, "No controller attached!");
+            JOptionPane.showMessageDialog(this, "Controller chưa được khởi tạo!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
 	}
 
-	// lay controller dang su dung
 	public ReportController getReportController() {
 		return reportController;
 	}
-
-	// gan controller cho giao dien
+	
 	public void setReportController(ReportController reportController) {
 		this.reportController = reportController;
 	}
