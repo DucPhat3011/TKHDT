@@ -5,27 +5,27 @@ import java.util.List;
 
 public class ReportService {
     // tao va tra ve bao cao theo loai va khoang thoi gian
-    public Report getReport(String type, Date startDate, Date endDate) {
-    	Report report = new Report( 1, type + " Report", type, startDate,
-    			endDate, new Date(), "Sample Data");
-
-        report.generate();
-        return report;
+    return new Report(
+            (int) (Math.random() * 1000), "Báo cáo " + type, type, 
+            startDate, endDate, new Date(), "Sample Data");
     }
     
     // tao bao cao tong hop tu nhieu loai bao cao
     public CompositeReport getCompositeReport(List<String> types, Date startDate, Date endDate) {
-    	CompositeReport composite = new CompositeReport("Composite Report", new ArrayList<IReport>());
-
+    	List<IReport> subReports = new ArrayList<>();
         for (String type : types) {
-            composite.add(getReport(type, startDate, endDate));
+            subReports.add(getReport(type, startDate, endDate));
         }
-
-        return composite;
+        return new CompositeReport("Báo cáo Tổng Hợp", subReports);
     }
 
     // xuat bao cao ra file
     public File exportReport(IReport report, String format) {
-    	return report.export(format);
+        if (report != null) {
+            return report.export(format);
+        }
+        return null;
     }
+
+
 }
