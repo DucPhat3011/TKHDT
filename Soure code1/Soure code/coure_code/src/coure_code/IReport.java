@@ -1,11 +1,12 @@
 import java.io.File;
 
-/**
- * interface chung cho tat ca cac loai bao cao..
- * dong vai tro Component trong Composite Pattern.
- */
 public interface IReport {
+	// tao bao cao
 	public void generate();
+	
+	// xuat bao cao theo dinh dang chi dinh
 	public File export(String format);
+	
+	// lay ten bao cao
 	public String getTitle();
 }
