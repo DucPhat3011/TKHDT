@@ -15,7 +15,9 @@ public class BookingManager {
 	public Booking createBooking(Customer customer, Room room, LocalDate checkIn, LocalDate checkOut) {
 		int newId = bookings.size() + 1;
 		Booking newBooking = new Booking(newId, customer, 0, null, null);
-		Date checkInDate = Date.from(checkIn.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+		// Check-in = thoi diem thuc te bam dat phong
+		Date checkInDate = new Date();
+		// Check-out: tam thoi giu theo ngay du kien, se cap nhat lai = thoi diem thanh toan
 		Date checkOutDate = Date.from(checkOut.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
 
 		BookingDetail detail = new BookingDetail();
@@ -67,6 +69,11 @@ public class BookingManager {
 			}
 		}
 		return false;
+	}
+
+	// Lay toan bo danh sach booking
+	public List<Booking> getAllBookings() {
+		return bookings;
 	}
 
 	// Lay booking theo ID

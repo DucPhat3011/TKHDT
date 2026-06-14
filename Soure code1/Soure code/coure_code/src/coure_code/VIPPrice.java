@@ -1,4 +1,3 @@
-package coure_code;
 
 public class VIPPrice implements IPriceStrategy {
 

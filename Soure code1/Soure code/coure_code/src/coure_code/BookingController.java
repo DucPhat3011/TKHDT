@@ -1,25 +1,40 @@
+
 import java.time.LocalDate;
 
 public class BookingController {
+	private BookingManager modelManager;
+	private BookingView view;
 
-	private BookingManager bookingManager;
-	private RoomFactory roomFactory;
+	public BookingController(BookingManager modelManager, BookingView view) {
+		this.modelManager = modelManager;
+		this.view = view;
 
-	public BookingController(BookingManager bookingManager) {
-		this.bookingManager = bookingManager;
-		this.roomFactory = new RoomFactory();
+		this.view.setBookingController(this);
 	}
 
-	public void handleBookingRequest(String customerId, String roomType, LocalDate checkIn, LocalDate checkOut) {
-		Customer customer = new Customer(1, customerId, "", "", "", "", "", "", "", 0, null);
-		Room room = roomFactory.createRoom(roomType);
-		if (room == null) {
-			System.out.println("Loi: Loai phong khong hop le!");
-			return;
+	// Xu ly yeu cau dat phong
+	public Booking handleBookingRequest(String customerId, String roomNumber, String roomType, LocalDate checkIn,
+			LocalDate checkOut) {
+		try {
+			Customer customer = new Customer(0, roomType, roomType, roomType, roomType, roomType, roomType, roomType,
+					roomType, 0, null);
+			customer.setId(Integer.parseInt(customerId));
+			customer.setFullName("Khách Hàng " + customerId);
+
+			RoomFactory roomFactory = new RoomFactory();
+			Room selectedRoom = roomFactory.createRoom(roomType);
+			if (selectedRoom != null) {
+				selectedRoom.setRoomNumber(roomNumber);
+			}
+
+			return modelManager.createBooking(customer, selectedRoom, checkIn, checkOut);
+
+		} catch (NumberFormatException e) {
+			System.out.println("Lỗi: Mã khách hàng phải là ký tự số nguyên!");
+			throw e;
+		} catch (Exception e) {
+			System.out.println("Lỗi phát sinh trong quá trình xử lý nghiệp vụ đặt phòng: " + e.getMessage());
+			throw e;
 		}
-		Booking newBooking = bookingManager.createBooking(customer, room, checkIn, checkOut);
-		NotificationService notificationService = new NotificationService();
-		newBooking.attach(notificationService);
-		System.out.println("Tao booking thanh cong! ID: #" + newBooking.getBookingId());
 	}
 }

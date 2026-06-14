@@ -108,6 +108,10 @@ public class Booking implements ISubject {
 		return 50.0; // Hoan 50%
 	}
 
+	public List<BookingDetail> getBookingDetails() {
+		return bookingDetails;
+	}
+ 
 	public int getBookingId() {
 		return bookingId;
 	}

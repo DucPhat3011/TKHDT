@@ -1,139 +1,233 @@
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class BookingView extends JFrame {
+@SuppressWarnings("serial")
+public class BookingView extends JPanel {
 
-    private BookingController bookingController;
+	private BookingController bookingController;
 
-    private JTextField txtCustomerId;
-    private JTextField txtCheckInDate;
-    private JTextField txtCheckOutDate;
-    private JComboBox<String> cbRoomType;
-    private JButton btnSubmit;
-    private JTable bookingTable;
-    private DefaultTableModel tableModel;
+	private JTextField txtCustomerId;
+	private JTextField txtRoomNumber;
+	private JTextField txtCheckInDate;
+	private JTextField txtCheckOutDate;
+	private JComboBox<String> cbRoomType;
+	private JButton btnSubmit;
+	private JTable bookingTable;
+	private DefaultTableModel tableModel;
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public BookingView(BookingController bookingController) {
-        this.bookingController = bookingController;
-        initComponent();
-    }
+	public BookingView() {
+		initComponent();
+	}
 
-    private void initComponent() {
-        setTitle("He Thong Đat Phong Khach San");
-        setSize(750, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
+	private void initComponent() {
+		Color bgLeft = new Color(245, 247, 250);
+		Color bgRight = Color.WHITE;
+		Color primaryColor = new Color(41, 128, 185);
+		Color accentColor = new Color(39, 174, 96);
+		Color textColor = new Color(44, 62, 80);
+		Font mainFont = new Font("Segoe UI", Font.PLAIN, 14);
+		Font titleFont = new Font("Segoe UI", Font.BOLD, 16);
 
-        // ===== Form nhap =====
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(4, 10, 4, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.WEST;
+		setLayout(new BorderLayout(15, 15));
+		setBorder(new EmptyBorder(15, 15, 15, 15));
+		setBackground(bgRight);
 
-        // Ma khach hang
-        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
-        formPanel.add(new JLabel("Ma khach hang:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 1.0;
-        txtCustomerId = new JTextField();
-        formPanel.add(txtCustomerId, gbc);
+		// --- FORM NHAP ---
+		JPanel pnlInput = new JPanel(new GridBagLayout());
+		pnlInput.setBackground(bgLeft);
+		pnlInput.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(new Color(218, 223, 230), 1), new EmptyBorder(25, 20, 25, 20)));
 
-        // Loai phong
-        gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
-        formPanel.add(new JLabel("Loai phong:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 1.0;
-        cbRoomType = new JComboBox<>(new String[]{"STANDARD", "VIP"});
-        formPanel.add(cbRoomType, gbc);
+		pnlInput.setPreferredSize(new Dimension(360, 0));
 
-        // Check-in
-        gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0;
-        formPanel.add(new JLabel("Ngay Check-in (YYYY-MM-DD):"), gbc);
-        gbc.gridx = 1; gbc.weightx = 1.0;
-        txtCheckInDate = new JTextField(LocalDate.now().toString());
-        formPanel.add(txtCheckInDate, gbc);
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(10, 5, 10, 5);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.anchor = GridBagConstraints.NORTHWEST;
 
-        // Check-out
-        gbc.gridx = 0; gbc.gridy = 3; gbc.weightx = 0;
-        formPanel.add(new JLabel("Ngay Check-out (YYYY-MM-DD):"), gbc);
-        gbc.gridx = 1; gbc.weightx = 1.0;
-        txtCheckOutDate = new JTextField(LocalDate.now().plusDays(1).toString());
-        formPanel.add(txtCheckOutDate, gbc);
+		// Tieu de
+		JLabel lblTitle = new JLabel("THÔNG TIN ĐẶT PHÒNG");
+		lblTitle.setFont(titleFont);
+		lblTitle.setForeground(primaryColor);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.gridwidth = 2;
+		pnlInput.add(lblTitle, gbc);
 
-        add(formPanel, BorderLayout.NORTH);
+		Dimension fieldSize = new Dimension(200, 32);
+		gbc.gridwidth = 1;
 
-        // ===== Bang danh sach booking =====
-        String[] columns = {"ID Booking", "Ma KH", "Loai Phong", "Check-in", "Check-out", "Trang Thai"};
-        tableModel = new DefaultTableModel(columns, 0) {
-            public boolean isCellEditable(int row, int col) { return false; }
-        };
-        bookingTable = new JTable(tableModel);
-        bookingTable.setRowHeight(22);
-        bookingTable.getTableHeader().setReorderingAllowed(false);
-        JScrollPane scrollPane = new JScrollPane(bookingTable);
-        add(scrollPane, BorderLayout.CENTER);
+		// Ma khach hang
+		gbc.gridy = 1;
+		gbc.gridx = 0;
+		gbc.weightx = 0;
+		pnlInput.add(createLabel("Mã khách hàng:", mainFont, textColor), gbc);
+		gbc.gridx = 1;
+		gbc.weightx = 1.0;
+		txtCustomerId = createTextField(fieldSize, mainFont);
+		pnlInput.add(txtCustomerId, gbc);
 
-        // ===== Nut bam =====
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        bottomPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY));
-        btnSubmit = new JButton("Datt Phong");
-        btnSubmit.setPreferredSize(new Dimension(120, 28));
-        bottomPanel.add(btnSubmit);
-        add(bottomPanel, BorderLayout.SOUTH);
+		// Loai phong
+		gbc.gridy = 2;
+		gbc.gridx = 0;
+		gbc.weightx = 0;
+		pnlInput.add(createLabel("Loại phòng:", mainFont, textColor), gbc);
+		gbc.gridx = 1;
+		gbc.weightx = 1.0;
+		cbRoomType = new JComboBox<>(new String[] { "STANDARD", "VIP" });
+		cbRoomType.setPreferredSize(fieldSize);
+		cbRoomType.setFont(mainFont);
+		cbRoomType.setBackground(Color.WHITE);
+		pnlInput.add(cbRoomType, gbc);
 
-        btnSubmit.addActionListener(e -> onSubmitBooking());
-    }
+		// So phong
+		gbc.gridy = 3;
+		gbc.gridx = 0;
+		gbc.weightx = 0;
+		pnlInput.add(createLabel("Số phòng:", mainFont, textColor), gbc);
+		gbc.gridx = 1;
+		gbc.weightx = 1.0;
+		txtRoomNumber = createTextField(fieldSize, mainFont);
+		pnlInput.add(txtRoomNumber, gbc);
 
-    public void render() {
-        setVisible(true);
-    }
+		// Check-in
+		gbc.gridy = 4;
+		gbc.gridx = 0;
+		gbc.weightx = 0;
+		pnlInput.add(createLabel("Ngày Check-in:", mainFont, textColor), gbc);
+		gbc.gridx = 1;
+		gbc.weightx = 1.0;
+		txtCheckInDate = createTextField(fieldSize, mainFont);
+		txtCheckInDate.setText(LocalDate.now().toString());
+		pnlInput.add(txtCheckInDate, gbc);
 
-    public void onSubmitBooking() {
-        try {
-            String customerId = txtCustomerId.getText().trim();
-            String roomType = (String) cbRoomType.getSelectedItem();
-            LocalDate checkIn = LocalDate.parse(txtCheckInDate.getText().trim(), formatter);
-            LocalDate checkOut = LocalDate.parse(txtCheckOutDate.getText().trim(), formatter);
+		// Check-out
+		gbc.gridy = 5;
+		gbc.gridx = 0;
+		gbc.weightx = 0;
+		pnlInput.add(createLabel("Ngày Check-out:", mainFont, textColor), gbc);
+		gbc.gridx = 1;
+		gbc.weightx = 1.0;
+		txtCheckOutDate = createTextField(fieldSize, mainFont);
+		txtCheckOutDate.setText(LocalDate.now().plusDays(1).toString());
+		pnlInput.add(txtCheckOutDate, gbc);
 
-            if (customerId.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Vui long nhap ma khach hang!", "Canh bao", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+		// Nut dat phong
+		gbc.gridy = 6;
+		gbc.gridx = 0;
+		gbc.gridwidth = 2;
+		gbc.weighty = 1.0;
+		gbc.insets = new Insets(25, 5, 5, 5);
+		btnSubmit = new JButton("XÁC NHẬN ĐẶT PHÒNG");
+		btnSubmit.setPreferredSize(new Dimension(0, 40));
+		btnSubmit.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		btnSubmit.setBackground(accentColor);
+		btnSubmit.setForeground(Color.WHITE);
+		btnSubmit.setFocusPainted(false);
+		btnSubmit.setBorderPainted(false);
+		pnlInput.add(btnSubmit, gbc);
 
-            bookingController.handleBookingRequest(customerId, roomType, checkIn, checkOut);
+		add(pnlInput, BorderLayout.WEST);
 
-            // Them dong moi vao bang
-            tableModel.addRow(new Object[]{
-                tableModel.getRowCount() + 1,
-                customerId,
-                roomType,
-                checkIn.toString(),
-                checkOut.toString(),
-                "PENDING"
-            });
+		// --- BANG DANH SACH ---
+		String[] columns = { "ID", "Mã KH", "Số Phòng", "Loại Phòng", "Ngày Đến", "Ngày Đi", "Trạng Thái" };
+		tableModel = new DefaultTableModel(columns, 0) {
+			public boolean isCellEditable(int row, int col) {
+				return false;
+			}
+		};
+		bookingTable = new JTable(tableModel);
+		bookingTable.setFont(mainFont);
+		bookingTable.setRowHeight(32);
+		bookingTable.setGridColor(new Color(230, 233, 238));
+		bookingTable.setSelectionBackground(new Color(232, 244, 252));
 
-            // Reset form sau khi dat
-            txtCustomerId.setText("");
-            txtCheckInDate.setText(LocalDate.now().toString());
-            txtCheckOutDate.setText(LocalDate.now().plusDays(1).toString());
+		// Custom Header bang du lieu
+		JTableHeader header = bookingTable.getTableHeader();
+		header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+		header.setBackground(new Color(52, 73, 94));
+		header.setForeground(Color.WHITE);
+		header.setPreferredSize(new Dimension(0, 38));
 
-            showSuccessMessage("Dat phong thanh cong cho khach " + customerId);
+		JScrollPane scrollPane = new JScrollPane(bookingTable);
+		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(218, 223, 230), 1));
+		add(scrollPane, BorderLayout.CENTER);
 
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Dinh dang khong hop le (dung: YYYY-MM-DD)!", "Loi", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+		// Su kien nut bam
+		btnSubmit.addActionListener(e -> onSubmitBooking());
+	}
 
-    public void showSuccessMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "Thong bao", JOptionPane.INFORMATION_MESSAGE);
-    }
+	private JLabel createLabel(String text, Font font, Color color) {
+		JLabel label = new JLabel(text);
+		label.setFont(font);
+		label.setForeground(color);
+		return label;
+	}
 
-    public void setBookingController(BookingController bookingController) {
-        this.bookingController = bookingController;
-    }
+	private JTextField createTextField(Dimension size, Font font) {
+		JTextField field = new JTextField();
+		field.setPreferredSize(size);
+		field.setFont(font);
+		field.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(209, 213, 219), 1),
+				BorderFactory.createEmptyBorder(2, 8, 2, 8)));
+		return field;
+	}
+
+	public void onSubmitBooking() {
+		try {
+			String customerId = txtCustomerId.getText().trim();
+			String roomNumber = txtRoomNumber.getText().trim();
+			String roomType = (String) cbRoomType.getSelectedItem();
+			LocalDate checkIn = LocalDate.parse(txtCheckInDate.getText().trim(), formatter);
+			LocalDate checkOut = LocalDate.parse(txtCheckOutDate.getText().trim(), formatter);
+
+			if (customerId.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập mã khách hàng!", "Cảnh báo",
+						JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
+			if (roomNumber.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập số phòng!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+
+			Booking booking = null;
+			if (bookingController != null) {
+				booking = bookingController.handleBookingRequest(customerId, roomNumber, roomType, checkIn, checkOut);
+			}
+
+			int bookingId = (booking != null) ? booking.getBookingId() : tableModel.getRowCount() + 1;
+
+			tableModel.addRow(new Object[] { bookingId, customerId, roomNumber, roomType, checkIn.toString(),
+					checkOut.toString(), "PENDING" });
+
+			// Reset form
+			txtCustomerId.setText("");
+			txtRoomNumber.setText("");
+			txtCheckInDate.setText(LocalDate.now().toString());
+			txtCheckOutDate.setText(LocalDate.now().plusDays(1).toString());
+
+			JOptionPane.showMessageDialog(this,
+					"Đặt phòng thành công cho khách " + customerId + "\nMã Hóa Đơn của bạn là: " + bookingId
+							+ "\n(Vui lòng nhớ mã này để dùng khi thanh toán)",
+					"Thành công", JOptionPane.INFORMATION_MESSAGE);
+
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Định dạng ngày không hợp lệ (YYYY-MM-DD)!", "Lỗi",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public void setBookingController(BookingController bookingController) {
+		this.bookingController = bookingController;
+	}
 }

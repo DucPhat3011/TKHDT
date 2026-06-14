@@ -1,89 +1,168 @@
-package coure_code;
-
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.List;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 @SuppressWarnings("serial")
 public class ServiceManagementView extends JPanel {
-    private ServiceController controller;
+	private ServiceController serviceController;
+	private DefaultTableModel tableModel;
 
-    private JTextField txtServiceId;
-    private JTextField txtServiceName;
-    private JTextField txtUnitPrice;
-    private DefaultTableModel serviceTableModel;
-    private JTable serviceTable;
+	private JTextField txtServiceName;
+	private JTextField txtServicePrice;
+	private JTextField txtRoomNumber; // O nhap so phong
 
-    public ServiceManagementView() {
-        initUI();
-    }
+	public void setController(ServiceController serviceController) {
+		this.serviceController = serviceController;
+	}
 
-    public void setController(ServiceController controller) {
-        this.controller = controller;
-    }
+	public ServiceManagementView() {
+		Color bgLeft = new Color(245, 247, 250);
+		Color bgRight = Color.WHITE;
+		Color primaryColor = new Color(41, 128, 185);
+		Color textColor = new Color(44, 62, 80);
+		Font mainFont = new Font("Segoe UI", Font.PLAIN, 14);
 
-    private void initUI() {
-        setLayout(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		setLayout(new BorderLayout(15, 15));
+		setBorder(new EmptyBorder(15, 15, 15, 15));
+		setBackground(bgRight);
 
-        JPanel panelInput = new JPanel(new GridLayout(4, 2, 1, 1));
-        panelInput.setBorder(BorderFactory.createTitledBorder(" Thong tin Dich Vu "));
-        panelInput.setPreferredSize(new Dimension(400, 0));
+		JPanel pnlInput = new JPanel(new GridBagLayout());
+		pnlInput.setBackground(bgLeft);
+		pnlInput.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(218, 223, 230), 1), new EmptyBorder(20, 20, 20, 20)));
+		pnlInput.setPreferredSize(new Dimension(360, 0));
 
-        txtServiceId = new JTextField();
-        txtServiceName = new JTextField();
-        txtUnitPrice = new JTextField();
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(8, 5, 8, 5);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.anchor = GridBagConstraints.NORTHWEST;
 
-        panelInput.add(new JLabel("Ma ID:"));
-        panelInput.add(txtServiceId);
-        panelInput.add(new JLabel("Ten Dich Vu:"));
-        panelInput.add(txtServiceName);
-        panelInput.add(new JLabel("Don Gia (VND):"));
-        panelInput.add(txtUnitPrice);
+		// Tieu de
+		JLabel lblTitle = new JLabel("THÔNG TIN DỊCH VỤ");
+		lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		lblTitle.setForeground(primaryColor);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.gridwidth = 2;
+		pnlInput.add(lblTitle, gbc);
 
-        JPanel panelBtns = new JPanel(new GridLayout(1, 2, 5, 5));
-        JButton btnAddService = new JButton("Them dich vu");
-        JButton btnUpdatePrice = new JButton("Cap nhat gia");
-        panelBtns.add(btnAddService);
-        panelBtns.add(btnUpdatePrice);
-        
-        panelInput.add(new JLabel("Thao tac:"));
-        panelInput.add(panelBtns);
+		Dimension fieldSize = new Dimension(200, 32);
+		gbc.gridwidth = 1;
 
-        String[] columns = {"Ma dich vu", "Ten dich vu", "Don Gia"};
-        serviceTableModel = new DefaultTableModel(columns, 0);
-        serviceTable = new JTable(serviceTableModel);
+		// Ten dich vu
+		gbc.gridy = 1;
+		gbc.gridx = 0;
+		gbc.weightx = 0;
+		JLabel lblName = new JLabel("Tên dịch vụ:");
+		lblName.setFont(mainFont);
+		lblName.setForeground(textColor);
+		pnlInput.add(lblName, gbc);
 
-        add(panelInput, BorderLayout.WEST);
-        add(new JScrollPane(serviceTable), BorderLayout.CENTER);
+		gbc.gridx = 1;
+		gbc.weightx = 1;
+		txtServiceName = new JTextField();
+		txtServiceName.setPreferredSize(fieldSize);
+		txtServiceName.setFont(mainFont);
+		pnlInput.add(txtServiceName, gbc);
 
-        btnAddService.addActionListener(e -> {
-            if (controller != null) {
-                controller.handleAddService(txtServiceId.getText(), txtServiceName.getText(), txtUnitPrice.getText());
-            }
-        });
+		// Gia dich vu
+		gbc.gridy = 2;
+		gbc.gridx = 0;
+		gbc.weightx = 0;
+		JLabel lblPrice = new JLabel("Giá dịch vụ:");
+		lblPrice.setFont(mainFont);
+		lblPrice.setForeground(textColor);
+		pnlInput.add(lblPrice, gbc);
 
-        btnUpdatePrice.addActionListener(e -> {
-            if (controller != null) {
-                controller.handleUpdateService(txtServiceId.getText(), txtUnitPrice.getText());
-            }
-        });
-    }
+		gbc.gridx = 1;
+		gbc.weightx = 1;
+		txtServicePrice = new JTextField();
+		txtServicePrice.setPreferredSize(fieldSize);
+		txtServicePrice.setFont(mainFont);
+		pnlInput.add(txtServicePrice, gbc);
 
-    public void displayServices(List<Services> services) {
-        serviceTableModel.setRowCount(0);
-        for (Services s : services) {
-            serviceTableModel.addRow(new Object[]{
-                s.getServiceId(), 
-                s.getServiceName(), 
-                String.format("%,.0f", s.getUnitPrice()) + " VND"
-            });
-        }
-    }
+		// So phong
+		gbc.gridy = 3;
+		gbc.gridx = 0;
+		gbc.weightx = 0;
+		JLabel lblRoom = new JLabel("Số phòng:");
+		lblRoom.setFont(mainFont);
+		lblRoom.setForeground(textColor);
+		pnlInput.add(lblRoom, gbc);
 
-    public void showMessage(String message, String title, int messageType) {
-        JOptionPane.showMessageDialog(this, message, title, messageType);
-    }
+		gbc.gridx = 1;
+		gbc.weightx = 1;
+		txtRoomNumber = new JTextField();
+		txtRoomNumber.setPreferredSize(fieldSize);
+		txtRoomNumber.setFont(mainFont);
+		pnlInput.add(txtRoomNumber, gbc);
+
+		// Nut them dich vu moi
+		gbc.gridy = 4;
+		gbc.gridx = 0;
+		gbc.gridwidth = 2;
+		gbc.weighty = 1.0;
+		gbc.insets = new Insets(20, 5, 5, 5);
+		JButton btnAdd = new JButton("Thêm Dịch Vụ Mới");
+		btnAdd.setPreferredSize(new Dimension(0, 38));
+		btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		btnAdd.setBackground(primaryColor);
+		btnAdd.setForeground(Color.WHITE);
+		btnAdd.setFocusPainted(false);
+		btnAdd.setBorderPainted(false);
+		pnlInput.add(btnAdd, gbc);
+
+		add(pnlInput, BorderLayout.WEST);
+
+		// --- BANG DU LIEU ---
+		tableModel = new DefaultTableModel(new String[] { "ID Dịch Vụ", "Tên Dịch Vụ", "Đơn Giá (VND)", "Số Phòng" }, 0);
+		JTable serviceTable = new JTable(tableModel);
+		serviceTable.setFont(mainFont);
+		serviceTable.setRowHeight(30);
+		serviceTable.setGridColor(new Color(230, 233, 238));
+		serviceTable.setSelectionBackground(new Color(232, 244, 252));
+		serviceTable.setSelectionForeground(textColor);
+
+		JTableHeader header = serviceTable.getTableHeader();
+		header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+		header.setBackground(new Color(52, 73, 94));
+		header.setForeground(Color.WHITE);
+		header.setPreferredSize(new Dimension(0, 35));
+
+		JScrollPane scrollPane = new JScrollPane(serviceTable);
+		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(218, 223, 230), 1));
+		add(scrollPane, BorderLayout.CENTER);
+
+		btnAdd.addActionListener(e -> {
+			if (serviceController != null) {
+				serviceController.handleAddService(txtServiceName.getText(), txtServicePrice.getText(), txtRoomNumber.getText());
+			}
+		});
+	}
+
+	public void clearInputFields() {
+		txtServiceName.setText("");
+		txtServicePrice.setText("");
+		txtRoomNumber.setText("");
+	}
+
+	public void displayServiceList(List<Services> services) {
+		tableModel.setRowCount(0);
+		for (Services s : services) {
+			tableModel.addRow(new Object[] { s.getServiceId(), s.getServiceName(),
+					String.format("%,.0f VND", s.getUnitPrice()), s.getRoomNumber() });
+		}
+	}
+
+	public void showMessage(String message, String title, int messageType) {
+		JOptionPane.showMessageDialog(this, message, title, messageType);
+	}
 }

@@ -1,6 +1,4 @@
 
-import java.util.List;
-
 public class NotificationService implements IObserver {
 
 	private EmailService emailService;
@@ -33,7 +31,7 @@ public class NotificationService implements IObserver {
 
 	// Gui thong bao thanh toan
 	public void sendPaymentRecap(Payment payment, Customer customer) {
-		System.out.println("Gui nhac nho thanh toán...");
+		System.out.println("Gui nhac nho thanh toan...");
 		System.out.println("Khach hang: " + customer.getName());
 		System.out.println("So tien: " + payment.getAmount());
 	}

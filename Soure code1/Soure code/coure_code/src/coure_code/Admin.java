@@ -1,27 +1,32 @@
-package coure_code;
 import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
 
 public class Admin extends Employee {
-    public Admin(int id, String userName, String password, String email, String fullName, String phone, String address, String employeeCode, double salary) {
-        super(id, userName, password, email, fullName, phone, address, employeeCode, salary, "Quan tri vien");
-    }
 
-    public void manageUsers() {
-        System.out.println("Admin dang quan ly nguoi dung...");
-    }
+	public Admin(int id, String userName, String password, String email, String fullName, String phone, String address,
+			String employeeCode, double salary, Date joinDate, String status, String department) {
+		super(id, userName, password, email, fullName, phone, address, employeeCode, salary, joinDate, status,
+				department);
+	}
 
-    public void manageRooms() {
-        System.out.println("Admin dang thiet lap he thong phong...");
-    }
+	// Quan ly tai khoan nguoi dung
+	public void manageUsers() {
+		System.out.println("Admin dang quan ly nguoi dung...");
+	}
 
-    public void viewReport() {
-        System.out.println("Admin dang xem bao cao doanh thu...");
-    }
+	// Quan ly thong tin phong
+	public void manageRooms() {
+		System.out.println("Admin dang thiet lap he thong phong...");
+	}
 
-    @Override
-    public double calculateSalary() {
-        return getSalary() * 2.0; 
-    }
+	// Xem cac bao cao thong ke
+	public void viewReport() {
+		System.out.println("Admin dang xem bao cao doanh thu...");
+	}
+
+	@Override
+	public double calculateSalary() {
+		// TODO Auto-generated method stub
+		return getSalary() * 2.0;
+	}
+
 }
