@@ -77,17 +77,19 @@ public class Report implements IReport {
 		this.data = data;
 	}
 
+	// tao bao cao
 	@Override
 	public void generate() {
 		System.out.println("Generating report: " + title);
 	}
 
+	// xuat bao cao ra file
 	@Override
 	public File export(String format) {
 		System.out.println("Exporting " + title + " to " + format);
         return new File(title + "." + format);
 	}
-
+	
 	@Override
 	public String getTitle() {
 		return title;
