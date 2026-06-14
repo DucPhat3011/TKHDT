@@ -38,7 +38,7 @@ public class CompositeReport implements IReport {
 	// tao tat ca bao cao con trong danh sach
 	@Override
 	public void generate() {
-		System.out.println("Generating composite report: " + title);
+		System.out.println("Đang tổng hợp báo cáo: " + title);
 
         for (IReport report : reports) {
             report.generate();
@@ -48,8 +48,8 @@ public class CompositeReport implements IReport {
 	// xuat bao cao tong hop ra file
 	@Override
 	public File export(String format) {
-		System.out.println("Exporting composite report: " + title);
-		return new File(title + "." + format);
+		System.out.println("Đang xuất báo cáo tổng hợp '" + title + "' ra định dạng: ");
+		return new File(title.replaceAll("\\s+", "_") + "." + format);
 	}
 
 	// lay ten bao cao tong hop
