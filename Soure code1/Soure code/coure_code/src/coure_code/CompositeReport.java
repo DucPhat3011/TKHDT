@@ -9,27 +9,33 @@ public class CompositeReport implements IReport {
 		this.title = title;
 		this.reports = reports;
 	}
-
+	
+	// cap nhat tieu de bao cao
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	// lay danh sach bao cao con
 	public List<IReport> getReports() {
 		return reports;
 	}
 
+	// cap nhat danh sach bao cao con
 	public void setReports(List<IReport> reports) {
 		this.reports = reports;
 	}
-
+	
+	// them bao cao vao bao cao tong hop
 	public void add(IReport report) {
 		reports.add(report);
 	}
 
+	// xoa bao cao khoi bao cao tong hop
 	public void remove(IReport report) {
 		reports.remove(report);
 	}
-
+	
+	// tao tat ca bao cao con trong danh sach
 	@Override
 	public void generate() {
 		System.out.println("Generating composite report: " + title);
@@ -39,12 +45,14 @@ public class CompositeReport implements IReport {
             }
         }
 
+	// xuat bao cao tong hop ra file
 	@Override
 	public File export(String format) {
 		System.out.println("Exporting composite report: " + title);
 		return new File(title + "." + format);
 	}
 
+	// lay ten bao cao tong hop
 	@Override
 	public String getTitle() {
 		return title;
