@@ -1,8 +1,7 @@
 import java.io.File;
 
 public interface IReport {
-	void generate();
-    File export(String format);
-    String getTitle();
-
+	public void generate();
+	public File export(String format);
+	public String getTitle();
 }
