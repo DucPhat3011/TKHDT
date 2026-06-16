@@ -1,46 +1,50 @@
-import java.io.File;
 import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 public class ReportController {
 	private ReportService reportService;
-	private IReport currentReport;
+	private ReportView view;
 
-	public ReportController(ReportService reportService) {
+	public ReportController(ReportService reportService, ReportView view) {
 		this.reportService = reportService;
+		this.view = view;
+		
+		this.view.setReportController(this);
 	}
 
-	// yeu cau tao bao cao
-	public void generateReport(String reportType, Date startDate, Date endDate) {
-		// yeu cau Service lay bao cao
-        this.currentReport = reportService.getReport(reportType, startDate, endDate);
-		// sinh du lieu bao cao
-        if (this.currentReport != null) {
-            this.currentReport.generate();
-            System.out.println("Đã hoàn tất việc tạo báo cáo trên Controller.");
-        }
+	// Xu ly tao bao cao theo loai va khoang thoi gian
+	public void handleGenerateReport(String type, Date startDate, Date endDate) {
+		try {
+			if (type == null || type.trim().isEmpty()) {
+				view.showMessage("Vui lòng chọn loại báo cáo!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			IReport report = reportService.getReport(type, startDate, endDate);
+			if (report != null) {
+				report.generate();
+
+				view.displayReportList(report);
+
+				System.out.println("Đã tạo báo cáo: " + report.getTitle());
+				view.showMessage("Đã tạo báo cáo: " + type + " thành công!", "Thông báo",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		} catch (Exception e) {
+			view.showMessage("Có lỗi xảy ra khi tạo báo cáo: " + e.getMessage(), "Lỗi hệ thống",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
-	// yeu cau xuat bao cao
-	public void exportReport(String format) {
-        if (this.currentReport != null) {
-            File exportedFile = reportService.exportReport(this.currentReport, format);
-            if (exportedFile != null) {
-                System.out.println("File báo cáo đã lưu tại: " + exportedFile.getName());
-            }
-        } else {
-            System.out.println("Không có báo cáo nào để xuất. Vui lòng tạo báo cáo trước!");
-        }
-	}
-	
-	public IReport getCurrentReport() {
-        return currentReport;
-    }
-	
-	public ReportService getReportService() {
-		return reportService;
-	}
-	
-	public void setReportService(ReportService reportService) {
-		this.reportService = reportService;
+	// Xuat bao cao ra file theo dinh dang chon
+	public void handleExport(IReport report, String format) {
+		if (report == null) {
+			view.showMessage("Vui lòng chọn báo cáo để xuất file!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		reportService.exportReport(report, format);
+		view.showMessage("Đã xuất file " + format.toUpperCase() + " thành công!", "Thông báo",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 }

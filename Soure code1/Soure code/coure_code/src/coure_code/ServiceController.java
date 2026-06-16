@@ -14,7 +14,7 @@ public class ServiceController {
 		refreshView();
 	}
 
-	// Thay dummyDesc thanh roomNum
+	// Them dich vu moi cho phong
 	public void handleAddService(String name, String priceStr, String roomNum) {
 		try {
 			if (name.trim().isEmpty() || priceStr.trim().isEmpty() || roomNum.trim().isEmpty()) {
@@ -22,10 +22,7 @@ public class ServiceController {
 				return;
 			}
 			double price = Double.parseDouble(priceStr);
-
 			int nextId = modelManager.getAllServices().size() + 1;
-
-			// Su dung constructor moi voi roomNum
 			Services newService = new Services(nextId, name, price, roomNum);
 			modelManager.addService(newService);
 			
@@ -37,6 +34,7 @@ public class ServiceController {
 		}
 	}
 
+	// Cap nhat gia cua dich vu ton tai
 	public void handleUpdateService(String idStr, String newPriceStr) {
 		try {
 			int id = Integer.parseInt(idStr);
@@ -65,6 +63,7 @@ public class ServiceController {
 		}
 	}
 
+	// Cap nhat danh sach tren giao dien
 	private void refreshView() {
 		List<Services> allServices = modelManager.getAllServices();
 		view.displayServiceList(allServices);

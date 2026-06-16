@@ -1,4 +1,5 @@
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Invoice {
@@ -118,17 +119,20 @@ public class Invoice {
 		this.status = status;
 	}
 
+	// Tinh tien tam tinh (tien phong + tien dich vu)
 	public double calculateSubTotal() {
 		subtotal = roomFee + serviceFee;
 		return subtotal;
 	}
 
+	// Tinh thue VAT (10%)
 	public double calculateTax() {
 		tax = subtotal * 0.1;
 
 		return tax;
 	}
 
+	// Ap dung ma khuyen mai
 	public void applyPromotion(Promotion promo) {
 		calculateSubTotal();
 
@@ -140,22 +144,38 @@ public class Invoice {
 		}
 	}
 
+	// Tinh tong thanh toan cuoi cung
 	public double calculateFinalAmount() {
 		calculateSubTotal();
-
 		calculateTax();
-
 		totalAmount = subtotal + tax - discount;
-
 		return totalAmount;
 	}
 
+	// Tra ve chuoi hoa don da dinh dang
 	public String getFormattedInvoice() {
-		return "Invoice ID: " + invoiceId + "\nRoom Fee: " + roomFee + "\nService Fee: " + serviceFee + "\nSubtotal: "
-				+ subtotal + "\nDiscount: " + discount + "\nTax: " + tax + "\nTotal Amount: " + totalAmount
-				+ "\nStatus: " + status;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	    String formattedDate = (paidDate != null) ? sdf.format(paidDate) : "---";
+	    
+	    return "===== HÓA ĐƠN THANH TOÁN =====" +
+	           "\nMã hóa đơn: " + invoiceId +
+	           "\nTiền phòng: " + formatMoney(roomFee) +
+	           "\nTiền dịch vụ: " + formatMoney(serviceFee) +
+	           "\nTạm tính: " + formatMoney(subtotal) +
+	           "\nGiảm giá: " + formatMoney(discount) +
+	           "\nThuế VAT: " + formatMoney(tax) +
+	           "\nTổng thanh toán: " + formatMoney(totalAmount) +
+	           "\nMã khuyến mãi: " + (appliedPromotion != null ? appliedPromotion.getPromoCode() : "Không có") +
+	           "\nNgày thanh toán: " + formattedDate +
+	           "\nTrạng thái: " + status;
+	}
+	
+	// Dinh dang tien te
+	private String formatMoney(double amount) {
+	    return String.format("%,.0f VND", amount);
 	}
 
+	// Tao file PDF hoa don
 	public File generatePDF() {
 		return new File("Invoice_" + invoiceId + ".pdf");
 	}

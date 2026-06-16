@@ -6,13 +6,17 @@ public class RoomManager {
 	private List<Room> rooms = new ArrayList<Room>();
 	private List<RoomType> roomTypes = new ArrayList<RoomType>();
 
-	// them phong moi
+	// them phong moi - co kiem tra trung so phong
 	public Room addRoom(Room newRoom) {
-		if (newRoom != null) {
-			rooms.add(newRoom);
+		if (newRoom == null) return null;
+		for (Room r : rooms) {
+			if (r.getRoomNumber().equals(newRoom.getRoomNumber())) {
+				System.out.println("So phong " + newRoom.getRoomNumber() + " da ton tai!");
+				return null;
+			}
 		}
+		rooms.add(newRoom);
 		return newRoom;
-
 	}
 
 	// cap nhat thong tin phong

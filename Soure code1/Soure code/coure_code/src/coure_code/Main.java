@@ -41,6 +41,11 @@ public class Main {
 			PaymentController paymentController = new PaymentController(cashPayment, paymentView, roomController,
 					promotionEngine, serviceManager, bookingManager);
 
+			// 6. Report
+			ReportService reportService = new ReportService(serviceManager, bookingManager);
+			ReportView reportView = new ReportView();
+			ReportController reportController = new ReportController(reportService, reportView);
+
 			// Giao dien Frame chinh
 			JFrame mainFrame = new JFrame("He Thong Quan Ly Khach San");
 			mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,9 +54,10 @@ public class Main {
 			// Tao cac thanh Tab chua cac View
 			JTabbedPane tabbedPane = new JTabbedPane();
 			tabbedPane.addTab("Quan Ly Phong", roomView);
-			tabbedPane.addTab("Dat Phong Khach San", bookingView); 
+			tabbedPane.addTab("Dat Phong Khach San", bookingView);
 			tabbedPane.addTab("Quan Ly Dich Vu", serviceView);
 			tabbedPane.addTab("Thanh Toan Hoa Don", paymentView);
+			tabbedPane.addTab("Bao Cao Thong Ke", reportView);
 
 			mainFrame.add(tabbedPane);
 			mainFrame.setVisible(true);

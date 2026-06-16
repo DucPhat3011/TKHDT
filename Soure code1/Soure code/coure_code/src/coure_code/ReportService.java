@@ -1,38 +1,46 @@
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ReportService {
-	// tao va tra ve bao cao theo loai va khoang thoi gian
-    public Report getReport(String type, Date startDate, Date endDate) {
-        // query vao Database, o day tra ve mock data
-        return new Report(
-            (int) (Math.random() * 1000), 
-            "Báo cáo " + type, 
-            type, 
-            startDate, 
-            endDate, 
-            new Date(), 
-            "Sample Data"
-        );
-    }
-    
-    // tao bao cao tong hop tu nhieu loai bao cao
-    public CompositeReport getCompositeReport(List<String> types, Date startDate, Date endDate) {
-        List<IReport> subReports = new ArrayList<>();
-        for (String type : types) {
-            subReports.add(getReport(type, startDate, endDate));
-        }
-        return new CompositeReport("Báo cáo Tổng Hợp", subReports);
-    }
+	private int idCounter = 1;
+	private ServiceManager serviceManager;
+	private BookingManager bookingManager;
+	private List<IReport> reportHistory = new ArrayList<>();
 
+	public ReportService(ServiceManager serviceManager, BookingManager bookingManager) {
+		this.serviceManager = serviceManager;
+		this.bookingManager = bookingManager;
+	}
 
-    // xuat bao cao ra file
-    public File exportReport(IReport report, String format) {
-        if (report != null) {
-            return report.export(format);
-        }
-        return null;
-    }
+	public Report getReport(String type, Date startDate, Date endDate) {
+		int totalBookings = (bookingManager != null) ? bookingManager.getTotalBookings() : Report.getStaticTotalInvoices();
+		double totalRevenue = Report.getStaticTotalRevenue();
+		int totalCustomers = Report.getStaticTotalCustomers();
+
+		Report report = new Report(idCounter++, "Bao cao " + type, type, startDate, endDate, new Date(), "",
+				totalBookings, totalRevenue, totalCustomers);
+
+		reportHistory.add(report);
+		return report;
+	}
+
+	public CompositeReport getCompositeReport(List<String> types, Date startDate, Date endDate) {
+		List<IReport> subReports = new ArrayList<>();
+		for (String type : types) {
+			subReports.add(getReport(type, startDate, endDate));
+		}
+		return new CompositeReport("Bao cao Tong Hop", subReports);
+	}
+
+	public File exportReport(IReport report, String format) {
+		if (report != null) return report.export(format);
+		return null;
+	}
+
+	public List<IReport> getAllReportsHistory() {
+		return reportHistory;
+	}
 }

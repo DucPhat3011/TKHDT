@@ -12,7 +12,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-@SuppressWarnings("serial")
 public class RoomManagementView extends JPanel {
     private RoomController roomController;
     private DefaultTableModel tableModel;
@@ -176,12 +175,14 @@ public class RoomManagementView extends JPanel {
         });
     }
 
+    // Xoa du lieu tren cac o nhap lieu
     public void clearInputFields() {
         txtRoomNumber.setText("");
         txtFloor.setText("");
         txtDescription.setText("");
     }
 
+    // Hien thi danh sach phong len bang
     public void displayRoomList(List<Room> rooms) {
         tableModel.setRowCount(0);
         for (Room r : rooms) {
@@ -197,6 +198,7 @@ public class RoomManagementView extends JPanel {
         }
     }
 
+    // Hien thi thong bao 
     public void showMessage(String message, String title, int messageType) {
         JOptionPane.showMessageDialog(this, message, title, messageType);
     }

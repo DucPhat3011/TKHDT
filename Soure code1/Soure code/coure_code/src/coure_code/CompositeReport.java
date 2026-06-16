@@ -22,6 +22,7 @@ public class CompositeReport implements IReport {
 		this.reports = reports;
 	}
 	
+	// them bao cao 
 	public void add(IReport report) {
 		reports.add(report);
 	}

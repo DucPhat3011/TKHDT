@@ -68,7 +68,6 @@ public class RoomType {
 	// cao nhat gia co ban cua loai phong
 	public void updateBasePrice(double newPrice) {
 		this.pricePerNight = newPrice;
-
 	}
 
 	// lay thong tin chi tiet cua loai phong

@@ -13,25 +13,48 @@ public class BookingManager {
 
 	// Tao booking moi trong he thong
 	public Booking createBooking(Customer customer, Room room, LocalDate checkIn, LocalDate checkOut) {
+		// Kiem tra room null
+		if (room == null) {
+			throw new IllegalArgumentException("Thong tin phong khong hop le!");
+		}
+
+		for (Booking booking : bookings) {
+			for (BookingDetail detail : booking.getBookingDetails()) {
+				if (detail.getRoom() != null && detail.getRoom().getRoomNumber().equals(room.getRoomNumber())) {
+					LocalDate oldCheckIn = detail.getCheckInDate().toInstant().atZone(java.time.ZoneId.systemDefault())
+							.toLocalDate();
+					LocalDate oldCheckOut = detail.getCheckOutDate().toInstant()
+							.atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+					// Kiem tra khoang thoi gian co trung nhau khong
+					boolean overlap = !checkOut.isBefore(oldCheckIn) && !checkIn.isAfter(oldCheckOut);
+					if (overlap) {
+						throw new IllegalArgumentException(
+								"Phong " + room.getRoomNumber() + " da duoc dat trong khoang thoi gian nay!");
+					}
+				}
+			}
+		}
+
 		int newId = bookings.size() + 1;
 		Booking newBooking = new Booking(newId, customer, 0, null, null);
-		// Check-in = thoi diem thuc te bam dat phong
-		Date checkInDate = new Date();
-		// Check-out: tam thoi giu theo ngay du kien, se cap nhat lai = thoi diem thanh toan
+		Date checkInDate = Date.from(checkIn.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
 		Date checkOutDate = Date.from(checkOut.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
-
 		BookingDetail detail = new BookingDetail();
+
 		detail.setDetailId(newId);
 		detail.setRoom(room);
 		detail.setCheckInDate(checkInDate);
 		detail.setCheckOutDate(checkOutDate);
-		detail.setPriceAtBooking(room != null ? 500000 : 0);
+		
+		detail.setPriceAtBooking(room.calculatePrice());
 		detail.setNumberOfGuests(1);
 
 		newBooking.addBookingDetail(detail);
+		Report.addCustomer();
 		bookings.add(newBooking);
-		return newBooking;
 
+		return newBooking;
 	}
 
 	// Cap nhat thong tin booking
@@ -50,9 +73,8 @@ public class BookingManager {
 	public boolean cancelBooking(int bookingId) {
 		for (Booking booking : bookings) {
 			if (booking.getBookingId() == bookingId) {
-				if (!booking.isEligibleForCancellation()) {
+				if (!booking.isEligibleForCancellation())
 					return false;
-				}
 				booking.cancel("Huy boi he thong");
 				return true;
 			}
@@ -79,9 +101,8 @@ public class BookingManager {
 	// Lay booking theo ID
 	public Booking getBookingById(int bookingId) {
 		for (Booking booking : bookings) {
-			if (booking.getBookingId() == bookingId) {
+			if (booking.getBookingId() == bookingId)
 				return booking;
-			}
 		}
 		return null;
 	}
@@ -107,4 +128,8 @@ public class BookingManager {
 		}
 	}
 
+	// Lay tong so booking
+	public int getTotalBookings() {
+		return bookings.size();
+	}
 }

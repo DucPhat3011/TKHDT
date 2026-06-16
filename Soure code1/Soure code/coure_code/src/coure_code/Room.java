@@ -74,7 +74,6 @@ public abstract class Room {
 	// kiem tra phong trong
 	public boolean isAvailable(Date from, Date to) {
 		return this.status == RoomStatus.AVAILABLE;
-
 	}
 
 	// tinh gia phong
